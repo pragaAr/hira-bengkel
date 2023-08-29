@@ -1,5 +1,6 @@
 <div class="container-fluid">
   <div class="success" data-flashdata="<?= $this->session->flashdata('success'); ?>"></div>
+  <div class="kembaligudang" data-flashdata="<?= $this->session->flashdata('kembaligudang'); ?>"></div>
   <div class="row">
     <div class="col-md-12">
       <div class="card shadow mb-4">

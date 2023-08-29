@@ -7,3 +7,13 @@ if (flashData) {
     text: flashData,
   });
 }
+
+const kembaligudang = $('.kembaligudang').data('flashdata');
+
+if (kembaligudang) {
+  Swal.fire({
+    icon: 'success',
+    title: 'Selamat,',
+    text: kembaligudang,
+  });
+}

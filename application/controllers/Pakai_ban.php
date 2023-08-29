@@ -156,7 +156,7 @@ class Pakai_ban extends CI_Controller
 
   public function kembaliGudang($id)
   {
-    $query = $this->PakaiBan_model->getPakaiKembali($id);
+    $query = $this->Pakaiban->getPakaiKembali($id);
 
     $idban        = $query->ban_id;
     $iddetail     = $query->id_detail_pakai_ban;
@@ -190,13 +190,9 @@ class Pakai_ban extends CI_Controller
       'tgl_add_history' => date('Y-m-d H:i:s')
     );
 
-    $this->PakaiBan_model->kembaliGudang($databan, $whereban, $datahistori, $datapakai, $wherepakai);
-    $this->session->set_flashdata('message', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-    Data Pemakaian berhasil dikembalikan ke gudang
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>');
+    $this->Pakaiban->kembaliGudang($databan, $whereban, $datahistori, $datapakai, $wherepakai);
+    $this->session->set_flashdata('kembaligudang', 'Ban telah dikembalikan ke gudang');
+
     redirect('pakai_ban');
   }
 }
