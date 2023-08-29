@@ -1,0 +1,13 @@
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group .select2-container {
+  flex: 1;
+}
+
+.input-group-append .btn {
+  border-radius: 0 0.25rem 0.25rem 0 !important;
+  height: calc(2.25rem + 2px);
+}
