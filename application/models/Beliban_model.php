@@ -37,6 +37,9 @@ class Beliban_model extends CI_Model
         <a href="http://localhost/he-bengkel/beli_ban/detail/$2" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail">
           <i class="fas fa-eye fa-sm"></i>
         </a>
+        <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+          <i class="fas fa-trash fa-sm"></i>
+        </a>
       </div>',
         'id_beli_ban, kd_beli_ban, no_nota_ban, nama_toko, total_beli_ban, total_harga_ban, status_bayar_ban, retur, tgl_beli_ban'
       );
@@ -273,18 +276,18 @@ class Beliban_model extends CI_Model
     return $query;
   }
 
-  // public function delete($kd)
-  // {
-  //   $this->db->delete('beli_ban', ['kd_beli_ban' => $kd]);
+  public function delete($kd)
+  {
+    $this->db->delete('beli_ban', ['kd_beli_ban' => $kd]);
 
-  //   $this->db->delete('detail_beli_ban', ['kd_beli_ban' => $kd]);
+    $this->db->delete('detail_beli_ban', ['kd_beli_ban' => $kd]);
 
-  //   $this->db->delete('history_ban', ['kd_history_ban' => $kd]);
-  // }
+    $this->db->delete('history_ban', ['kd_history_ban' => $kd]);
+  }
 
-  // public function deleteseri($hasil)
-  // {
-  //   $this->db->where_in('no_seri', $hasil);
-  //   $this->db->delete('ban');
-  // }
+  public function deleteseri($hasil)
+  {
+    $this->db->where_in('no_seri', $hasil);
+    $this->db->delete('ban');
+  }
 }

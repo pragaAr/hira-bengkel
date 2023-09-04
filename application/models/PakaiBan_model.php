@@ -25,6 +25,9 @@ class PakaiBan_model extends CI_Model
           <a href="http://localhost/he-bengkel/pakai_ban/detail/$2" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail">
             <i class="fas fa-eye fa-sm"></i>
           </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+          <i class="fas fa-trash fa-sm"></i>
+        </a>
         </div>',
         'id_pakai_ban, kd_pakai_ban, plat_no_truck, nama_montir_ban, merk_truck, jenis_truck, total_pakai_ban, tgl_pakai_ban'
       );
@@ -161,6 +164,17 @@ class PakaiBan_model extends CI_Model
     return $query;
   }
 
+  public function getBanPakaiId($kd)
+  {
+    $this->db->select('ban_id')
+      ->from('detail_pakai_ban')
+      ->where('kd_pakai_ban', $kd);
+
+    $query = $this->db->get()->result_array();
+
+    return $query;
+  }
+
   public function getPakaiKembali($id)
   {
     $this->db->select('*');
@@ -196,5 +210,17 @@ class PakaiBan_model extends CI_Model
     $this->db->update('ban', $databan, $whereban);
     $this->db->update('detail_pakai_ban', $datapakai, $wherepakai);
     $this->db->insert('history_ban', $datahistori);
+  }
+
+  public function delete($kd)
+  {
+    $this->db->delete('pakai_ban', ['kd_pakai_ban' => $kd]);
+    $this->db->delete('detail_pakai_ban', ['kd_pakai_ban' => $kd]);
+    $this->db->delete('history_ban', ['kd_history_ban' => $kd]);
+  }
+
+  public function updateStatus($databan)
+  {
+    $this->db->update_batch('ban', $databan, 'id_ban');
   }
 }

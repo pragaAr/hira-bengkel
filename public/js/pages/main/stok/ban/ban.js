@@ -60,7 +60,7 @@ $('#banTables').DataTable({
       data: 'vulk',
       className: 'text-center',
       render: function (data, type, row) {
-        return data === 0
+        return data == 0
           ? '<button type="button" class="btn btn-sm btn-dark" style="border: 1px solid white;" disabled>Ori</button>'
           : '<button type="button" class="btn btn-sm btn-primary" style="border: 1px solid white;" disabled>Vulk</button>';
       },

@@ -278,21 +278,21 @@ class Beli_ban extends CI_Controller
     echo json_encode($data);
   }
 
-  // public function delete()
-  // {
-  //   $kd = $this->input->post('kd');
+  public function delete()
+  {
+    $kd = $this->input->post('kd');
 
-  //   $seri = $this->Beliban->getSeriBan($kd);
+    $seri = $this->Beliban->getSeriBan($kd);
 
-  //   foreach ($seri as $res) {
-  //     $hasil[] = $res['no_seri_ban'];
-  //   }
+    foreach ($seri as $res) {
+      $hasil[] = $res['no_seri_ban'];
+    }
 
-  //   $data = $this->Beliban->delete($kd);
-  //   $data = $this->Beliban->deleteseri($hasil);
+    $this->Beliban->delete($kd);
+    $data = $this->Beliban->deleteseri($hasil);
 
-  //   echo json_encode($data);
-  // }
+    echo json_encode($data);
+  }
 
   public function print($kd)
   {

@@ -27,7 +27,7 @@ class Beli_model extends CI_Model
           <i class="fas fa-eye fa-sm"></i>
         </a>
         <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
-            <i class="fas fa-trash fa-sm"></i>
+          <i class="fas fa-trash fa-sm"></i>
         </a>
       </div>',
         'id_beli, kd_beli, no_nota, nama_toko, total_beli, diskon_all, ppn, total_harga, status_bayar, retur, tgl_beli'

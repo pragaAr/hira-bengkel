@@ -195,4 +195,25 @@ class Pakai_ban extends CI_Controller
 
     redirect('pakai_ban');
   }
+
+  public function delete()
+  {
+    $kd     = $this->input->post('kdpakai');
+
+    $banid  = $this->Pakaiban->getBanPakaiId($kd);
+
+    $updateban = [];
+
+    foreach ($banid as $res) {
+      $updateban[] = array(
+        'id_ban'      => $res['ban_id'],
+        'status_ban'  => "Gudang",
+      );
+    }
+
+    $this->Pakaiban->delete($kd);
+    $data = $this->Pakaiban->updateStatus($updateban);
+
+    echo json_encode($data);
+  }
 }
