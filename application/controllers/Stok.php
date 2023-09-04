@@ -89,7 +89,7 @@ class Stok extends CI_Controller
 
   public function create()
   {
-    $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
+    $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s\.\(\)-]/', '', $this->input->post('nama'))));
     $merk   = htmlspecialchars(trim($this->input->post('merk')));
     $baru   = htmlspecialchars(trim($this->input->post('baru')));
     $bekas  = htmlspecialchars(trim($this->input->post('bekas')));
@@ -115,7 +115,7 @@ class Stok extends CI_Controller
   public function update()
   {
     $id     = $this->input->post('id');
-    $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
+    $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s\.\(\)-]/', '', $this->input->post('nama'))));
     $merk   = htmlspecialchars(trim($this->input->post('merk')));
     $baru   = htmlspecialchars(trim($this->input->post('baru')));
     $bekas  = htmlspecialchars(trim($this->input->post('bekas')));
@@ -152,7 +152,7 @@ class Stok extends CI_Controller
 
   public function addSelect()
   {
-    $nama     = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
+    $nama     = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s\.\(\)-]/', '', $this->input->post('nama'))));
     $merknama = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('merknama'))));
     $merk     = trim($this->input->post('merk'));
     $baru     = trim($this->input->post('baru'));
