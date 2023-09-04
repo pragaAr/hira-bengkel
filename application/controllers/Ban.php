@@ -102,7 +102,7 @@ class Ban extends CI_Controller
         ];
       }
     } else {
-      $data = $this->Stok->getSearchDataBan($keyword);
+      $data = $this->Ban->getSearchDataBan($keyword);
 
       $response = [];
       foreach ($data as $ban) {

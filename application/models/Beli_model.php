@@ -26,6 +26,9 @@ class Beli_model extends CI_Model
         <a href="http://localhost/he-bengkel/beli/detail/$2" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail">
           <i class="fas fa-eye fa-sm"></i>
         </a>
+        <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+            <i class="fas fa-trash fa-sm"></i>
+        </a>
       </div>',
         'id_beli, kd_beli, no_nota, nama_toko, total_beli, diskon_all, ppn, total_harga, status_bayar, retur, tgl_beli'
       );
@@ -367,5 +370,12 @@ class Beli_model extends CI_Model
     );
 
     $this->db->update('beli_part', $databeli, $where);
+  }
+
+  public function delete($kd)
+  {
+    $this->db->delete('beli_part', ['kd_beli' => $kd]);
+    $this->db->delete('detail_beli', ['kd_beli' => $kd]);
+    $this->db->delete('history_part', ['kd_history_part' => $kd]);
   }
 }

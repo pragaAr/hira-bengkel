@@ -296,4 +296,12 @@ class Beli extends CI_Controller
 
     $mpdf->Output();
   }
+
+  public function delete()
+  {
+    $kd   = $this->input->post('kdpakai');
+    $data = $this->Pakai->delete($kd);
+
+    echo json_encode($data);
+  }
 }

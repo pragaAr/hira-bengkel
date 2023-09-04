@@ -28,6 +28,9 @@ class Pakai_model extends CI_Model
           <a href="http://localhost/he-bengkel/pakai/detail/$2" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail">
             <i class="fas fa-eye fa-sm"></i>
           </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+            <i class="fas fa-trash fa-sm"></i>
+        </a>
         </div>',
         'id_pakai, kd_pakai, plat_no_truck, merk_truck, jenis_truck, total_pakai, tgl_pakai'
       );
@@ -197,5 +200,12 @@ class Pakai_model extends CI_Model
   public function getIdDetail($id)
   {
     return $this->db->get('detail_pakai', ['id_detail_pakai' => $id])->row_array();
+  }
+
+  public function delete($kd)
+  {
+    $this->db->delete('pakai_part', ['kd_pakai' => $kd]);
+    $this->db->delete('detail_pakai', ['kd_pakai' => $kd]);
+    $this->db->delete('history_part', ['kd_history_part' => $kd]);
   }
 }
