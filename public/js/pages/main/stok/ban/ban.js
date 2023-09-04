@@ -22,6 +22,7 @@ $('#banTables').DataTable({
         api.search(this.value).draw();
       });
   },
+  pageLength: 10,
   lengthChange: false,
   autoWidth: false,
   processing: true,

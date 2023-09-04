@@ -17,6 +17,7 @@ $('#stokTables').DataTable({
   language: {
     searchPlaceholder: 'Search Part',
   },
+  pageLength: 10,
   initComplete: function () {
     var api = this.api();
     $('#stokTables_filter input')
