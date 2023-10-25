@@ -130,7 +130,7 @@
               </div>
               <div class="form-group col-lg-4 col-md-4">
                 <label class="font-weight-bold" for="totmindisk">Sub Total</label>
-                <input type="text" name="totmindisk" id="totmindisk" class="form-control" readonly>
+                <input type="text" name="totmindisk" id="totmindisk" value='0' class="form-control" readonly>
               </div>
               <div class="form-group col-lg-2 col-md-4 d-flex align-items-end">
                 <button type="button" class="btn btn-secondary btn-block mt-4" id="tambah" style="height:calc(1.5em + 0.75rem + 2px);" disabled>

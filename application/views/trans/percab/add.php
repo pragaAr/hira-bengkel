@@ -41,7 +41,7 @@
             <div class="form-row">
               <div class="form-group col-lg-3 col-md-3">
                 <label class="font-weight-bold" for="truckid">Truck</label>
-                <select name="truckid" id="truckid" class="form-control selecttruck">
+                <select name="truckid" id="truckid" class="form-control selecttruck" style="width:100%;">
                   <option value=""></option>
 
                 </select>

@@ -393,7 +393,7 @@ $(document).ready(function () {
     $('#hrg').val('0');
     $('#disk').val('0');
     $('#ket').val('');
-    $('#totmindisk').val('');
+    $('#totmindisk').val('0');
     $('#jmlbeli').prop('readonly', true);
     $('#size').prop('disabled', true);
     $('#stat').prop('disabled', true);

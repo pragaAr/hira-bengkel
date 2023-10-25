@@ -157,6 +157,7 @@ class Vulkanisir extends CI_Controller
     $ongkos     = $this->input->post('biaya_hidden');
     $kdvulk     = $this->input->post('kdvulk');
     $toko       = $this->input->post('toko');
+    $tokoid     = $this->input->post('tokoid');
     $biaya      = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
     $pay        = $this->input->post('pay');
     $nota       = $this->input->post('nota');
@@ -166,7 +167,7 @@ class Vulkanisir extends CI_Controller
     $vulkDone = array(
       'no_nota'           => $nota,
       'kd_vulk'           => $kdvulk,
-      'tempat_vulk'       => $toko,
+      'tempat_vulk'       => $tokoid,
       'biaya'             => $biaya,
       'pembayaran'        => $pay,
       'jml_vulk_selesai'  => $jml,
@@ -245,6 +246,39 @@ class Vulkanisir extends CI_Controller
     echo $this->Vulk->getDetailAllVulk();
   }
 
+  public function allDetailVulkDone()
+  {
+    $data['title']    = 'Detail Vulkanisir Selesai';
+
+    $this->load->view('template/header', $data);
+    $this->load->view('template/sidebar');
+    $this->load->view('template/navbar');
+    $this->load->view('trans/ban/vulk/detail-all-done', $data);
+  }
+
+  public function getAllDetailDone()
+  {
+    header('Content-Type: application/json');
+
+    echo $this->Vulk->getDetailAllVulkDone();
+  }
+
+  public function detail()
+  {
+    $kd     = $this->input->post('kd');
+    $head   = $this->Vulk->getVulkKd($kd);
+    $detail = $this->Vulk->getDetailByKd($kd);
+
+    $response = array(
+      'kdvulk'  => strtoupper($head->kd_vulk),
+      'tglvulk' => date('d/m/Y', strtotime($head->tgl_vulk)),
+      'tempat'  => strtoupper($head->nama_toko),
+      'detail'  => $detail
+    );
+
+    echo json_encode($response);
+  }
+
   public function getNota()
   {
     $keyword = $this->input->get('q');
@@ -314,5 +348,26 @@ class Vulkanisir extends CI_Controller
     $mpdf->WriteHTML($content);
 
     $mpdf->Output();
+  }
+
+  public function delete()
+  {
+    $kd   = $this->input->post('kd');
+
+    $seri = $this->Vulk->getBanVulkSeri($kd);
+
+    $updateban = [];
+
+    foreach ($seri as $res) {
+      $updateban[] = array(
+        'no_seri'    => $res['no_seri_vulk'],
+        'status_ban' => "Gudang",
+      );
+    }
+
+    $this->Vulk->delete($kd);
+    $data = $this->Vulk->updateStatus($updateban);
+
+    echo json_encode($data);
   }
 }

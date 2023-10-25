@@ -301,8 +301,7 @@ class Beli_ban extends CI_Controller
     $data['sumtotal'] = $this->Beliban->getSumId($kd);
     $data['total']    = $this->Beliban->getTotalBayar($kd);
     $data['retur']    = $this->Returban->getBanMasukRetur($kd);
-    // echo json_encode($data['total']);
-    // die;
+
     $content  = $this->load->view('trans/ban/beli/print', $data, true);
 
     $mpdf = new Mpdf([

@@ -16,6 +16,10 @@
               <i class="fas fa-file-alt fa-sm"></i>
               All Data
             </a>
+            <a href="<?= base_url('vulkanisir/allDetailVulkDone') ?>" class="btn btn-secondary btn-sm">
+              <i class="fas fa-file-alt fa-sm"></i>
+              All Data Done
+            </a>
             <a href="<?= base_url('vulkanisir/selesai') ?>" class="btn btn-success btn-sm">
               <i class="fas fa-check-circle fa-sm"></i>
               Done
@@ -69,26 +73,6 @@
 </div>
 </div>
 
-<!-- detailModal -->
-<div class="modal fade" id="detailModal" data-backdrop="static">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content p-3">
-      <div class="modal-header">
-        <h5 class="modal-title">Detail Vulkanisir</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- cetakDoModal -->
 <div class="modal fade" id="cetakDo" data-backdrop="static">
   <div class="modal-dialog">
@@ -116,6 +100,42 @@
           <button type="submit" class="btn btn-primary" id="buttonCetakDo">Cetak</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- detailModal -->
+<div class="modal fade" id="detailVulk" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titledetail"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex justify-content-between align-items-center font-weight-bold">
+          <p id="detailtempat"></p>
+          <p id="detailtgl"></p>
+        </div>
+        <hr>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="text-center">
+              <tr>
+                <th scope="col">Seri</th>
+                <th scope="col">Merk</th>
+                <th scope="col">Ukuran</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody class="text-center" id="tbodyDetail">
+
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -88,6 +88,82 @@ $('#vulkBanTables').DataTable({
   },
 });
 
+$('#vulkBanTables').on('click', '.btn-detail', function () {
+  const kd = $(this).data('kd');
+
+  $.ajax({
+    url: 'http://localhost/he-bengkel/vulkanisir/detail',
+    method: 'POST',
+    dataType: 'JSON',
+    data: { kd: kd },
+    success: function (data) {
+      const tbody = $('#tbodyDetail');
+
+      $('#titledetail').html('Detail Vulkanisir ' + data.kdvulk);
+
+      $('#detailtempat').html('Di ' + data.tempat);
+      $('#detailtgl').html('Tgl ' + data.tglvulk);
+
+      tbody.empty();
+
+      $.each(data.detail, function (index, item) {
+        const statusText = item.status == '1' ? 'Selesai' : 'Proses';
+        const row =
+          '<tr>' +
+          '<td>' +
+          item.no_seri_vulk +
+          '</td>' +
+          '<td>' +
+          item.merk_vulk +
+          '</td>' +
+          '<td>' +
+          item.ukuran_ban_vulk +
+          '</td>' +
+          '<td>' +
+          statusText +
+          '</td>' +
+          '</tr>';
+
+        tbody.append(row);
+      });
+
+      $('#detailVulk').modal('show');
+    },
+  });
+});
+
+$('#vulkBanTables').on('click', '.btn-delete', function () {
+  const kd = $(this).data('kd');
+
+  Swal.fire({
+    title: 'Apakah anda yakin ?',
+    text: 'Data akan di hapus !!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Batal',
+    confirmButtonText: 'Ya, Hapus !',
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: 'http://localhost/he-bengkel/vulkanisir/delete',
+        method: 'POST',
+        data: { kd: kd },
+        success: function (data) {
+          console.log(data);
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Data Vulkanisir berhasil dihapus!',
+          });
+          $('#vulkBanTables').DataTable().ajax.reload(null, false);
+        },
+      });
+    }
+  });
+});
+
 $('#cetakDo').on('shown.bs.modal', function () {
   $('.selectnota')
     .select2({

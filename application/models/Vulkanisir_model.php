@@ -23,6 +23,12 @@ class Vulkanisir_model extends CI_Model
           <a href="http://localhost/he-bengkel/vulkanisir/suratJalanKeluar/$2" target="_blank" class="btn btn-info btn-sm btn-print" data-toggle="tooltip" title="Cetak">
             <i class="fas fa-print fa-sm"></i>
           </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+            <i class="fas fa-trash fa-sm"></i>
+          </a>
         </div>',
         'id_vulk, kd_vulk, tempat_vulk, jml_total_vulk, tgl_vulk'
       );
@@ -37,14 +43,15 @@ class Vulkanisir_model extends CI_Model
     $this->db->update_batch('ban', $update_ban, 'id_ban');
   }
 
-  public function getDetailByKdVulk($kd)
+  public function getDetailByKd($kd)
   {
-    $this->db->select('*');
-    $this->db->from('vulkanisir');
-    $this->db->join('detail_vulk', 'detail_vulk.kd_vulk = vulkanisir.kd_vulk');
-    $this->db->where('vulkanisir.kd_vulk', $kd);
-    $query = $this->db->get();
-    return $query->result_array();
+    $this->db->select('no_seri_vulk, merk_vulk, ukuran_ban_vulk, status')
+      ->from('detail_vulk')
+      ->where('kd_vulk', $kd);
+
+    $query = $this->db->get()->result();
+
+    return $query;
   }
 
   public function getVulkKd($kd)
@@ -112,6 +119,23 @@ class Vulkanisir_model extends CI_Model
     return $this->datatables->generate();
   }
 
+  public function getDetailAllVulkDone()
+  {
+    $this->datatables->select('a.id_detail_vulk_selesai, a.kd_vulk, a.no_seri, a.merk, a.ukuran, a.ongkos, b.no_nota, b.tgl_selesai, c.nama_toko')
+      ->from('detail_vulk_selesai a')
+      ->join('vulk_done b', 'b.kd_vulk = a.kd_vulk')
+      ->join('toko c', 'c.id_toko = b.tempat_vulk')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          
+        </div>',
+        'id_detail_vulk_selesai, kd_vulk, no_seri, merk, ukuran, no_nota, tgl_update, nama_toko, tgl_selesai'
+      );
+
+    return $this->datatables->generate();
+  }
+
   public function selectNota()
   {
     $this->db->select('id_vulk_done, no_nota')
@@ -169,6 +193,17 @@ class Vulkanisir_model extends CI_Model
     return $query;
   }
 
+  public function getBanVulkSeri($kd)
+  {
+    $this->db->select('no_seri_vulk')
+      ->from('detail_vulk')
+      ->where('kd_vulk', $kd);
+
+    $query = $this->db->get()->result_array();
+
+    return $query;
+  }
+
   public function addDataDone($vulkDone, $vulkDoneItems)
   {
     $this->db->insert('vulk_done', $vulkDone);
@@ -215,5 +250,18 @@ class Vulkanisir_model extends CI_Model
   public function updateDetailData($data)
   {
     $this->db->update_batch('detail_vulk', $data, 'no_seri_vulk');
+  }
+
+  public function delete($kd)
+  {
+    $this->db->delete('vulkanisir', ['kd_vulk' => $kd]);
+    $this->db->delete('detail_vulk', ['kd_vulk' => $kd]);
+    $this->db->delete('detail_vulk_selesai', ['kd_vulk' => $kd]);
+    $this->db->delete('history_ban', ['kd_history_ban' => $kd]);
+  }
+
+  public function updateStatus($databan)
+  {
+    $this->db->update_batch('ban', $databan, 'no_seri');
   }
 }

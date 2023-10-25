@@ -62,7 +62,7 @@ $('#belibanTables').DataTable({
     },
     {
       data: 'nama_toko',
-      searchable: false,
+      searchable: true,
       render: function (data, type, row) {
         return data.toUpperCase();
       },
