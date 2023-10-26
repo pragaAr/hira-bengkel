@@ -157,7 +157,7 @@ class Vulkanisir extends CI_Controller
     $ongkos     = $this->input->post('biaya_hidden');
     $kdvulk     = $this->input->post('kdvulk');
     $toko       = $this->input->post('toko');
-    $tokoid     = $this->input->post('tokoid');
+    $tokoid     = $this->input->post('tempat');
     $biaya      = preg_replace("/[^0-9\.]/", "", $this->input->post('total_hidden'));
     $pay        = $this->input->post('pay');
     $nota       = $this->input->post('nota');
