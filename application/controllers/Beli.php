@@ -261,7 +261,7 @@ class Beli extends CI_Controller
     $data['total']    = $this->Beli->getTotalBayar($kd);
     $data['sumtotal'] = $this->Beli->getSumId($kd);
     $data['retur']    = $this->Retur->getPartMasukRetur($kd);
-
+    $do = strtoupper($kd);
     $content  = $this->load->view('trans/part/beli/print', $data, true);
 
     $mpdf = new Mpdf([
@@ -270,6 +270,8 @@ class Beli extends CI_Controller
       'orientation' => 'L'
     ]);
 
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>...DO: $do | Halaman {PAGENO} dari {nb}...</p>");
+    $mpdf->AddPage();
     $mpdf->WriteHTML($content);
 
     $mpdf->Output();
@@ -292,6 +294,8 @@ class Beli extends CI_Controller
       'orientation' => 'L'
     ]);
 
+    $mpdf->SetHTMLFooter('<p class="page-number-footer">...Halaman {PAGENO} dari {nb}</p>');
+    $mpdf->AddPage();
     $mpdf->WriteHTML($content);
 
     $mpdf->Output();

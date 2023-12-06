@@ -89,6 +89,12 @@
       padding: 3px 2px;
       line-height: 1.5;
     }
+
+    .page-number-footer {
+      text-align: right;
+      font-style: italic;
+      font-size: 11px;
+    }
   </style>
 </head>
 

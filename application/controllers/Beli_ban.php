@@ -301,6 +301,7 @@ class Beli_ban extends CI_Controller
     $data['sumtotal'] = $this->Beliban->getSumId($kd);
     $data['total']    = $this->Beliban->getTotalBayar($kd);
     $data['retur']    = $this->Returban->getBanMasukRetur($kd);
+    $do = strtoupper($kd);
 
     $content  = $this->load->view('trans/ban/beli/print', $data, true);
 
@@ -309,6 +310,9 @@ class Beli_ban extends CI_Controller
       'format' => 'A4',
       'orientation' => 'L'
     ]);
+
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>...DO: $do | Halaman {PAGENO} dari {nb}...</p>");
+    $mpdf->AddPage();
 
     $mpdf->WriteHTML($content);
 

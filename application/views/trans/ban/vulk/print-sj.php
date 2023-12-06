@@ -89,6 +89,12 @@
       padding: 3px 2px;
       line-height: 1.5;
     }
+
+    .page-number-footer {
+      text-align: right;
+      font-style: italic;
+      font-size: 11px;
+    }
   </style>
 </head>
 
@@ -131,7 +137,7 @@
           :<br>
           :
         </td>
-        <td style="width:10%; font-size:12px; font-family:Arial, Helvetica, sans-serif; padding-left:10px;">
+        <td style="width:15%; font-size:12px; font-family:Arial, Helvetica, sans-serif; padding-left:10px;">
           <?= strtoupper($head->kd_vulk) ?><br>
           <?= date('d-m-Y', strtotime($head->tgl_vulk)) ?>
           <br>

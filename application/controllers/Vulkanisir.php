@@ -317,7 +317,8 @@ class Vulkanisir extends CI_Controller
 
     $data['head']     = $this->Vulk->getKdByNota($nota);
     $data['detail']   = $this->Vulk->getDataByNota($nota);
-
+    // var_dump($data['detail']);
+    // die;
     $content  = $this->load->view('trans/ban/vulk/print-selesai', $data, true);
 
     $mpdf = new Mpdf([
@@ -325,6 +326,9 @@ class Vulkanisir extends CI_Controller
       'format' => 'A4',
       'orientation' => 'L'
     ]);
+
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>...Nota: $nota | Halaman {PAGENO} dari {nb}...</p>");
+    $mpdf->AddPage();
 
     $mpdf->WriteHTML($content);
 
@@ -336,7 +340,7 @@ class Vulkanisir extends CI_Controller
     $data['head']     = $this->Vulk->getVulkKd($kd);
     $data['dtvulk']   = $this->Vulk->getDataSuratJalan($kd);
 
-
+    $do = strtoupper($kd);
     $content  = $this->load->view('trans/ban/vulk/print-sj', $data, true);
 
     $mpdf = new Mpdf([
@@ -345,6 +349,8 @@ class Vulkanisir extends CI_Controller
       'orientation' => 'L'
     ]);
 
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>...DO: $do | Halaman {PAGENO} dari {nb}...</p>");
+    $mpdf->AddPage();
     $mpdf->WriteHTML($content);
 
     $mpdf->Output();

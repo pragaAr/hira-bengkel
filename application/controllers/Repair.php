@@ -132,7 +132,7 @@ class Repair extends CI_Controller
     $data['kd']       = $kd;
     $data['dtrep']    = $dt;
     $data['header']   = $header;
-
+    $dorep = strtoupper($kd);
     $content  = $this->load->view('trans/part/repair/print', $data, true);
 
     $mpdf = new Mpdf([
@@ -141,6 +141,8 @@ class Repair extends CI_Controller
       'orientation' => 'L'
     ]);
 
+    $mpdf->SetHTMLFooter("<p class='page-number-footer'>...Kd: $dorep | Halaman {PAGENO} dari {nb}...</p>");
+    $mpdf->AddPage();
     $mpdf->WriteHTML($content);
 
     $mpdf->Output();
