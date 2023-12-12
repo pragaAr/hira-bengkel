@@ -37,7 +37,7 @@ class PakaiBan_model extends CI_Model
 
   public function getAllPakai()
   {
-    $this->datatables->select('a.id_detail_pakai_ban, a.kd_pakai_ban, a.status_ban_pakai, a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, b.no_seri, c.nama_merk, d.tgl_pakai_ban, e.plat_no_truck as truck')
+    $this->datatables->select('a.id_detail_pakai_ban, a.kd_pakai_ban, a.status_ban_pakai, a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, b.no_seri, b.ukuran_ban, c.nama_merk, d.tgl_pakai_ban, e.plat_no_truck as truck')
       ->from('detail_pakai_ban a')
       ->join('ban b', 'b.id_ban = a.ban_id', 'left')
       ->join('merk c', 'c.id_merk = a.merk_ban_id', 'left')
@@ -48,7 +48,7 @@ class PakaiBan_model extends CI_Model
       // --for searching needed
       ->add_column(
         'view',
-        'id_detail_pakai_ban, kd_pakai_ban, truck, jml_pakai_ban, no_seri, status_pakai_ban, nama_merk, ket_pakai_ban, tgl_pakai_ban, status_ban_pakai'
+        'id_detail_pakai_ban, kd_pakai_ban, truck, jml_pakai_ban, no_seri, ukuran_ban, status_pakai_ban, nama_merk, ket_pakai_ban, tgl_pakai_ban, status_ban_pakai'
       );
     // --for searching needed
 
@@ -119,7 +119,7 @@ class PakaiBan_model extends CI_Model
 
   public function getDetailPakai($kd)
   {
-    $this->db->select('a.id_detail_pakai_ban, a.ban_id, a.merk_ban_id, a.status_pakai_ban, a.status_ban_pakai, a.ket_pakai_ban, a.jml_pakai_ban, b.id_ban, b.no_seri, b.merk_ban_id, c.id_merk, c.nama_merk')
+    $this->db->select('a.id_detail_pakai_ban, a.ban_id, a.merk_ban_id, a.status_pakai_ban, a.status_ban_pakai, a.ket_pakai_ban, a.jml_pakai_ban, b.id_ban, b.no_seri, b.ukuran_ban, b.merk_ban_id, c.id_merk, c.nama_merk')
       ->from('detail_pakai_ban a')
       ->join('ban b', 'b.id_ban = a.ban_id', 'left')
       ->join('merk c', 'c.id_merk = a.merk_ban_id', 'left')

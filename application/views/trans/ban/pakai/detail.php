@@ -48,7 +48,7 @@
                   <thead class="text-center">
                     <tr>
                       <th style="width:5%;"><strong>No</strong></th>
-                      <th><strong>No Seri/Merk</strong></th>
+                      <th><strong>Seri/Merk/Ukuran</strong></th>
                       <th><strong>Status</strong></th>
                       <th><strong>Qty</strong></th>
                       <th><strong>Status Pakai</strong></th>
@@ -60,7 +60,7 @@
                     foreach ($detail as $all) : ?>
                       <tr>
                         <td><?= $i ?>.</td>
-                        <td><?= $all->no_seri ?>, <?= $all->nama_merk ?></td>
+                        <td><?= $all->no_seri ?>, <?= $all->nama_merk ?>, <?= $all->ukuran_ban ?></td>
                         <td><?= $all->status_ban_pakai ?></td>
                         <td><?= $all->jml_pakai_ban ?> pcs</td>
                         <?php if ($all->jml_pakai_ban == 0) { ?>

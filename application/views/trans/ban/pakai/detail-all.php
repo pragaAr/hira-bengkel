@@ -22,7 +22,7 @@
                   <th scope="col">No</th>
                   <th scope="col">Kd Pakai</th>
                   <th scope="col">Truck</th>
-                  <th scope="col">Seri</th>
+                  <th scope="col">Seri/Merk/Ukuran</th>
                   <th scope="col">Jumlah</th>
                   <th scope="col">Status</th>
                   <th scope="col">Ket</th>
