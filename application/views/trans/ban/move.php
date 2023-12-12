@@ -21,9 +21,9 @@
               <thead class="text-center">
                 <tr>
                   <th scope="col" style="width:5%;">No</th>
-                  <th scope="col">Seri</th>
-                  <th scope="col">Ket</th>
-                  <th scope="col">Tgl</th>
+                  <th scope="col">Seri/Merk/Ukuran</th>
+                  <th scope="col">Keterangan</th>
+                  <th scope="col">Tanggal</th>
                 </tr>
               </thead>
               <tbody style="font-size:13px;">
