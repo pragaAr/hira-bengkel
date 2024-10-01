@@ -1,0 +1,39 @@
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group .select2-container {
+  flex: 1;
+}
+
+.input-group-append .btn {
+  border-radius: 0 0.25rem 0.25rem 0 !important;
+  height: calc(2.25rem + 2px);
+}
+
+/* input[type="date"]::-webkit-calendar-picker-indicator {
+  background:transparent;
+  bottom:0;
+  color:transparent;
+  cursor:pointer;
+  height:auto;
+  left:0;
+  position:absolute;
+  right:0;
+  top:0;
+  width:auto;
+}
+
+input[type="month"]::-webkit-calendar-picker-indicator {
+  background:transparent;
+  bottom:0;
+  color:transparent;
+  cursor:pointer;
+  height:auto;
+  left:0;
+  position:absolute;
+  right:0;
+  top:0;
+  width:auto;
+} */
