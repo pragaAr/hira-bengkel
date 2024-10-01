@@ -98,18 +98,35 @@
   </div>
 
   <div class="row">
-    <div class="col-lg mb-4">
-      <div class="card border-left-danger shadow h-100 py-2">
+    <div class="col-lg-6 mb-4">
+      <div class="card border-left-secondary shadow h-100 py-2">
         <div class="card-body">
           <div class="row no-gutters align-items-center">
             <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+              <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">
                 Perbaikan Cabang
               </div>
               <div class="p mb-0 font-weight-bold text-gray-800" id="percabPriceTotal"></div>
             </div>
             <div class="col-auto">
-              <i class="fas fa-tools fa-2x text-danger"></i>
+              <i class="fas fa-tools fa-2x text-secondary"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+      <div class="card border-left-danger shadow h-100 py-2">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                Total Semua
+              </div>
+              <div class="p mb-0 font-weight-bold text-gray-800" id="allTotalPrice"></div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-cash-register fa-2x text-danger"></i>
             </div>
           </div>
         </div>
