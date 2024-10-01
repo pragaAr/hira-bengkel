@@ -9,7 +9,6 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => '',
-	// 'database' => 'test_bengkel',
 	'database' => 'he-bengkel',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
