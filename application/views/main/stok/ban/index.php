@@ -6,26 +6,23 @@
           <h4 class="m-0 font-weight-bold">
             <?= $title ?>
           </h4>
-          <!-- <a target="_blank" href="<?= base_url('ban/print') ?>" class="btn btn-sm btn-primary">
-            <i class="fas fa-print fa-sm"></i>
-            Print
-          </a> -->
+
         </div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-bordered table-hover" id="banTables" width="100%" cellspacing="0">
               <thead class="text-center">
                 <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Seri</th>
-                  <th scope="col">Merk</th>
-                  <th scope="col">Ukuran</th>
-                  <th scope="col">Qty</th>
-                  <th scope="col">Kondisi</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Di Vulkanisir</th>
-                  <th scope="col">In</th>
-                  <th scope="col">Actions</th>
+                  <th scope="col" class="align-middle">No</th>
+                  <th scope="col" class="align-middle">Seri</th>
+                  <th scope="col" class="align-middle">Merk</th>
+                  <th scope="col" class="align-middle">Ukuran</th>
+                  <th scope="col" class="align-middle">Qty</th>
+                  <th scope="col" class="align-middle">Kondisi</th>
+                  <th scope="col" class="align-middle">Status</th>
+                  <th scope="col" class="align-middle">Di Vulkanisir</th>
+                  <th scope="col" class="align-middle">In</th>
+                  <th scope="col" class="align-middle">Actions</th>
                 </tr>
               </thead>
               <tbody style="font-size:13px;">

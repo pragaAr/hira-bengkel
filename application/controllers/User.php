@@ -22,12 +22,15 @@ class User extends CI_Controller
 
   public function index()
   {
-    $data['title']  = 'Data User';
+    $data = [
+      'title' => 'Data User'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('main/user', $data);
+    $this->load->view('template/footer');
   }
 
   public function getUsers()
@@ -55,20 +58,20 @@ class User extends CI_Controller
 
   public function create()
   {
-    $nama       = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
-    $telp       = htmlspecialchars(trim(preg_replace('/[^0-9]/', '', $this->input->post('telpon'))));
-    $username   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('username'))));
-    $pass       = trim($this->input->post('pass'));
-    $role       = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('role'))));
+    $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
+    $telp   = htmlspecialchars(trim(preg_replace('/[^0-9]/', '', $this->input->post('telpon'))));
+    $uname  = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('username'))));
+    $pass   = trim($this->input->post('pass'));
+    $role   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('role'))));
 
-    $data = array(
+    $data = [
       'nama_user'     => strtolower($nama),
       'no_telp_user'  => strtolower($telp),
-      'username'      => strtolower($username),
+      'username'      => strtolower($uname),
       'password'      => password_hash($pass, PASSWORD_DEFAULT),
       'user_role'     => $role,
       'user_in'       => date('Y-m-d H:i:s')
-    );
+    ];
 
     $data = $this->User->addUser($data);
 
@@ -77,28 +80,28 @@ class User extends CI_Controller
 
   public function update()
   {
-    $id         = $this->input->post('id');
-    $nama       = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
-    $telp       = htmlspecialchars(trim(preg_replace('/[^0-9]/', '', $this->input->post('telp'))));
-    $username   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('username'))));
-    $pass       = trim($this->input->post('pass'));
-    $role       = $this->input->post('role');
+    $id     = $this->input->post('id');
+    $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
+    $telp   = htmlspecialchars(trim(preg_replace('/[^0-9]/', '', $this->input->post('telp'))));
+    $uname  = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('username'))));
+    $pass   = trim($this->input->post('pass'));
+    $role   = $this->input->post('role');
 
-    $data = array(
+    $data = [
       'nama_user'     => strtolower($nama),
       'no_telp_user'  => $telp,
-      'username'      => strtolower($username),
+      'username'      => strtolower($uname),
       'password'      => password_hash($pass, PASSWORD_DEFAULT),
       'user_role'     => $role,
-    );
+    ];
 
-    $where = array(
-      'id_user'   => $id
-    );
+    $where = [
+      'id_user' => $id
+    ];
 
-    $data = $this->User->editUser($data, $where);
+    $query = $this->User->editUser($data, $where);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function delete()
