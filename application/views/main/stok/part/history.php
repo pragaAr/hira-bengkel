@@ -2,12 +2,12 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h4 class="m-0 font-weight-bold">
+        <div class="card-header py-3 d-flex align-items-center justify-content-between flex-wrap">
+          <h4 class="m-0 text-dark font-weight-bold">
             <?= $title ?>
           </h4>
           <div class="btn-group">
-            <a href="<?= base_url('stok') ?>" class="btn btn-sm btn-dark">
+            <a href="<?= base_url('stok') ?>" class="btn btn-dark">
               <i class="fas fa-arrow-left fa-sm"></i>
               Kembali
             </a>

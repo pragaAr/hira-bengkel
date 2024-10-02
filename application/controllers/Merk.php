@@ -12,6 +12,9 @@ class Merk extends CI_Controller
 
     $this->load->model('Merk_model', 'Merk');
 
+    $this->id   = $this->session->userdata('id_user');
+    $this->user = $this->session->userdata('user_role');
+
     if (empty($this->session->userdata('id_user'))) {
       $this->session->set_flashdata('flashceklogin', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
@@ -20,19 +23,22 @@ class Merk extends CI_Controller
 
   public function index()
   {
-    $data['title']  = 'Data Merk';
+    $data = [
+      'title' => 'Data Merk'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('main/merk', $data);
+    $this->load->view('template/footer');
   }
 
   public function getMerk()
   {
     header('Content-Type: application/json');
 
-    echo $this->Merk->getData();
+    echo $this->Merk->getData($this->user);
   }
 
   public function getId()
@@ -45,62 +51,48 @@ class Merk extends CI_Controller
 
   public function getDataMerk()
   {
-    $keyword = $this->input->get('q');
+    $key  = $this->input->get('q');
 
-    if (!$keyword) {
+    $data = !$key ? $this->Merk->selectMerk() : $this->Merk->selectSearchMerk($key);
 
-      $data = $this->Merk->selectMerk();
+    $res  = [];
 
-      $response = [];
-      foreach ($data as $merk) {
-        $response[] = [
-          'id' => $merk->id_merk,
-          'text' => strtoupper($merk->nama_merk),
-        ];
-      }
-
-      echo json_encode($response);
-    } else {
-      $data = $this->Merk->selectSearchMerk($keyword);
-
-      $response = [];
-      foreach ($data as $merk) {
-        $response[] = [
-          'id' => $merk->id_merk,
-          'text' => strtoupper($merk->nama_merk),
-        ];
-      }
-
-      echo json_encode($response);
+    foreach ($data as $merk) {
+      $res[] = [
+        'id'    => $merk->id_merk,
+        'text'  => strtoupper($merk->nama_merk),
+      ];
     }
+
+    echo json_encode($res);
   }
 
   public function create()
   {
-    $merk   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('merk'))));
+    $merk = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('merk'))));
 
-    $data = array(
-      'nama_merk'   => strtolower($merk),
-      'merk_in'     => date('Y-m-d H:i:s'),
-      'user_id'     => $this->session->userdata('id_user')
-    );
+    $data = [
+      'nama_merk' => strtolower($merk),
+      'merk_in'   => date('Y-m-d H:i:s'),
+      'user_id'   => $this->id
+    ];
 
-    $data = $this->Merk->addMerk($data);
+    $query = $this->Merk->addMerk($data);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function addSelect()
   {
-    $nama   = trim($this->input->post('namamerk'));
+    $nama = trim($this->input->post('namamerk'));
 
-    $datamerk = array(
+    $data = [
       'nama_merk' => strtolower($nama),
       'merk_in'   => date('Y-m-d H:i:s'),
-      'user_id'   => $this->session->userdata('id_user')
-    );
+      'user_id'   => $this->id
+    ];
 
-    $this->Merk->addNewData($datamerk);
+    $this->Merk->addNewData($data);
 
     $merkid = $this->db->insert_id();
 
@@ -112,30 +104,30 @@ class Merk extends CI_Controller
     echo json_encode($response);
   }
 
-
   public function update()
   {
     $id     = $this->input->post('id');
     $merk   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('merk'))));
 
-    $data = array(
-      'nama_merk'     => strtolower($merk),
-    );
+    $data = [
+      'nama_merk' => strtolower($merk),
+    ];
 
-    $where = array(
-      'id_merk'   => $id
-    );
+    $where = [
+      'id_merk' => $id
+    ];
 
-    $data = $this->Merk->editMerk($data, $where);
+    $query = $this->Merk->editMerk($data, $where);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function delete()
   {
-    $id   = $this->input->post('idmerk');
-    $data = $this->Merk->deleteMerk($id);
+    $id = $this->input->post('idmerk');
 
-    echo json_encode($data);
+    $query = $this->Merk->deleteMerk($id);
+
+    echo json_encode($query);
   }
 }

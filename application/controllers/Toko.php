@@ -20,12 +20,15 @@ class Toko extends CI_Controller
 
   public function index()
   {
-    $data['title']  = 'Data Toko';
+    $data = [
+      'title' => 'Data Toko'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('main/toko', $data);
+    $this->load->view('template/footer');
   }
 
   public function getToko()
@@ -45,31 +48,20 @@ class Toko extends CI_Controller
 
   public function getListToko()
   {
-    $keyword = $this->input->get('q');
+    $key  = $this->input->get('q');
 
-    if (!$keyword) {
-      $data = $this->Toko->getDataToko();
+    $data = !$key ? $this->Toko->getDataToko() : $this->Toko->getSearchDataToko($key);
 
-      $response = [];
-      foreach ($data as $toko) {
-        $response[] = [
-          'id' => $toko->id_toko,
-          'text' => ucwords($toko->nama_toko)
-        ];
-      }
-    } else {
-      $data = $this->Toko->getSearchDataToko($keyword);
+    $res  = [];
 
-      $response = [];
-      foreach ($data as $toko) {
-        $response[] = [
-          'id' => $toko->id_toko,
-          'text' => ucwords($toko->nama_toko),
-        ];
-      }
+    foreach ($data as $toko) {
+      $res[] = [
+        'id'    => $toko->id_toko,
+        'text'  => ucwords($toko->nama_toko)
+      ];
     }
 
-    echo json_encode($response);
+    echo json_encode($res);
   }
 
   public function create()
@@ -77,16 +69,16 @@ class Toko extends CI_Controller
     $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
     $telp   = htmlspecialchars(trim(preg_replace('/[^0-9]/', '', $this->input->post('telp'))));
 
-    $data = array(
+    $data = [
       'nama_toko'     => strtolower($nama),
       'no_telp_toko'  => strtolower($telp),
       'toko_in'       => date('Y-m-d H:i:s'),
       'user_id'       => $this->session->userdata('id_user')
-    );
+    ];
 
-    $data = $this->Toko->addToko($data);
+    $query = $this->Toko->addToko($data);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function addSelect()
@@ -94,14 +86,14 @@ class Toko extends CI_Controller
     $nama   = trim($this->input->post('namatoko'));
     $telp   = trim($this->input->post('telptoko'));
 
-    $datatoko = array(
+    $data = [
       'nama_toko'     => strtolower($nama),
       'no_telp_toko'  => strtolower($telp),
       'toko_in'       => date('Y-m-d H:i:s'),
       'user_id'       => $this->session->userdata('id_user'),
-    );
+    ];
 
-    $this->Toko->addNewData($datatoko);
+    $this->Toko->addNewData($data);
 
     $tokoid = $this->db->insert_id();
 
@@ -119,25 +111,26 @@ class Toko extends CI_Controller
     $nama   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('nama'))));
     $telp   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('telp'))));
 
-    $data = array(
+    $data = [
       'nama_toko'     => strtolower($nama),
       'no_telp_toko'  => strtolower($telp),
-    );
+    ];
 
-    $where = array(
+    $where = [
       'id_toko'   => $id
-    );
+    ];
 
-    $data = $this->Toko->editToko($data, $where);
+    $query = $this->Toko->editToko($data, $where);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function delete()
   {
-    $id   = $this->input->post('idtoko');
-    $data = $this->Toko->deleteToko($id);
+    $id = $this->input->post('idtoko');
 
-    echo json_encode($data);
+    $query = $this->Toko->deleteToko($id);
+
+    echo json_encode($query);
   }
 }

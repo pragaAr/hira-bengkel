@@ -5,19 +5,22 @@ class Ban_model extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('ban.id_ban, ban.no_seri, ban.ukuran_ban, ban.jml_ban, ban.status_ban, ban.vulk, ban.sudah_vulk, ban.date_ban_add, merk.id_merk, merk.nama_merk');
-    $this->datatables->from('ban');
-    $this->datatables->join('merk', 'merk.id_merk = ban.merk_ban_id', 'left');
+    $this->datatables->select('
+                              a.id_ban, a.no_seri, a.ukuran_ban, 
+                              a.jml_ban, a.status_ban, a.vulk, 
+                              a.sudah_vulk, a.date_ban_add, 
+                              b.id_merk, b.nama_merk
+                              ')
+      ->from('ban a')
+      ->join('merk b', 'b.id_merk = a.merk_ban_id', 'left')
 
-    // --for searching needed
-    $this->datatables->add_column(
-      'view',
-      '<div class="btn-group" role="group"> 
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group"> 
      
       </div>',
-      'id_ban, no_seri, ukuran_ban, jml_ban, status_ban, vulk, nama_merk'
-    );
-    // --for searching needed
+        'id_ban, no_seri, ukuran_ban, jml_ban, status_ban, vulk, nama_merk'
+      );
 
     $results = $this->datatables->generate();
 
@@ -28,16 +31,16 @@ class Ban_model extends CI_Model
       if ($row['status_ban'] == 'Gudang' || $row['status_ban'] == 'gudang') {
 
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="http://localhost/he-bengkel/ban/riwayat/' . $row['no_seri'] . '" class="btn btn-sm btn-info text-white" data-toggle="tooltip" title="History">
+                            <a href="http://localhost/he-bengkel/ban/riwayat/' . $row['no_seri'] . '" class="btn btn-sm border border-light btn-info text-white" title="History">
                               <i class="fas fa-history fa-sm"></i>
                             </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white btn-ubah-kondisi-ban" data-seri="' . $row['no_seri'] . '" data-toggle="tooltip" title="Ubah Kondisi">
+                            <a href="javascript:void(0);" class="btn btn-sm border border-light btn-warning text-white btn-ubah-kondisi-ban" data-seri="' . $row['no_seri'] . '" title="Ubah Kondisi">
                               <i class="fas fa-exclamation-circle fa-sm"></i>
                             </a>
                           </div>';
       } else {
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="http://localhost/he-bengkel/ban/riwayat/' . $row['no_seri'] . '" class="btn btn-sm btn-info text-white" data-toggle="tooltip" title="History">
+                            <a href="http://localhost/he-bengkel/ban/riwayat/' . $row['no_seri'] . '" class="btn btn-sm border border-light btn-info text-white" title="History">
                               <i class="fas fa-history fa-sm"></i>
                             </a>
                           </div>';
@@ -49,27 +52,34 @@ class Ban_model extends CI_Model
     echo $results;
   }
 
-  // for select2 and search
   public function getDataBan()
   {
-    $this->db->select('ban.id_ban, ban.no_seri, ban.ukuran_ban, ban.vulk, merk.id_merk, merk.nama_merk')
-      ->from('ban')
-      ->join('merk', 'merk.id_merk = ban.merk_ban_id', 'left')
-      ->where('status_ban', 'gudang')
-      ->order_by('no_seri', 'asc');
+    $this->db->select('
+                      a.id_ban, a.no_seri, 
+                      a.ukuran_ban, a.vulk, 
+                      b.id_merk, b.nama_merk
+                      ')
+      ->from('ban a')
+      ->join('merk b', 'b.id_merk = a.merk_ban_id', 'left')
+      ->where('a.status_ban', 'gudang')
+      ->order_by('a.no_seri', 'asc');
 
     $res = $this->db->get()->result();
 
     return $res;
   }
 
-  public function getSearchDataBan($keyword)
+  public function getSearchDataBan($key)
   {
-    $this->db->select('ban.id_ban, ban.no_seri, ban.ukuran_ban, ban.vulk, merk.id_merk, merk.nama_merk')
-      ->from('ban')
-      ->join('merk', 'merk.id_merk = ban.merk_ban_id', 'left')
-      ->where('status_ban', 'gudang')
-      ->like('no_seri', $keyword);
+    $this->db->select('
+                      a.id_ban, a.no_seri, 
+                      a.ukuran_ban, a.vulk, 
+                      b.id_merk, b.nama_merk
+                      ')
+      ->from('ban a')
+      ->join('merk b', 'b.id_merk = a.merk_ban_id', 'left')
+      ->where('a.status_ban', 'gudang')
+      ->like('a.no_seri', $key);
 
     $res = $this->db->get()->result();
 
@@ -79,52 +89,54 @@ class Ban_model extends CI_Model
 
   public function getId($id)
   {
-    $this->db->select('*');
-    $this->db->from('ban');
-    $this->db->join('merk', 'merk.id_merk=ban.merk_ban_id');
-    $this->db->where('no_seri', $id);
+    $this->db->select('*')
+      ->from('ban')
+      ->join('merk', 'merk.id_merk=ban.merk_ban_id')
+      ->where('no_seri', $id);
+
     $query = $this->db->get();
 
     return $query->row();
   }
 
-  public function getBan() // for print
+  public function getBan()
   {
-    $this->db->select('*');
-    $this->db->from('ban');
-    $this->db->join('merk', 'merk.id_merk=ban.merk_ban_id');
+    $this->db->select('*')
+      ->from('ban')
+      ->join('merk', 'merk.id_merk=ban.merk_ban_id');
+
     $query = $this->db->get();
 
     return $query->result();
   }
 
-  public function selectBan() // for vulkanisir
+  public function selectBan()
   {
     $status = "Gudang";
     // $vulk   = 0;
 
-    $this->db->select('ban.id_ban, ban.no_seri, ban.ukuran_ban, merk.nama_merk')
-      ->from('ban')
-      ->where('status_ban', $status)
+    $this->db->select('a.id_ban, a.no_seri, a.ukuran_ban, b.nama_merk')
+      ->from('ban a')
       // ->where('vulk', $vulk)
-      ->join('merk', 'merk.id_merk = ban.merk_ban_id');
+      ->join('merk b', 'b.id_merk = a.merk_ban_id')
+      ->where('a.status_ban', $status);
 
     $query = $this->db->get()->result();
 
     return $query;
   }
 
-  public function selectSearchBan($keyword) // for vulkanisir
+  public function selectSearchBan($key) // for vulkanisir
   {
     $status = "Gudang";
     // $vulk   = 0;
 
-    $this->db->select('ban.id_ban, ban.no_seri, ban.ukuran_ban, merk.nama_merk')
-      ->from('ban')
-      ->where('status_ban', $status)
+    $this->db->select('a.id_ban, a.no_seri, a.ukuran_ban, b.nama_merk')
+      ->from('ban a')
+      ->join('merk b', 'b.id_merk = a.merk_ban_id')
+      ->where('a.status_ban', $status)
       // ->where('vulk', $vulk)
-      ->like('no_seri', $keyword)
-      ->join('merk', 'merk.id_merk = ban.merk_ban_id');
+      ->like('a.no_seri', $key);
 
     $query = $this->db->get()->result();
 
@@ -135,11 +147,13 @@ class Ban_model extends CI_Model
   {
     $status = "Gudang";
 
-    $this->db->select('*');
-    $this->db->from('ban');
-    $this->db->join('merk', 'merk.id_merk=ban.merk_ban_id');
-    $this->db->where('status_ban', $status);
+    $this->db->select('*')
+      ->from('ban')
+      ->join('merk', 'merk.id_merk=ban.merk_ban_id')
+      ->where('status_ban', $status);
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
@@ -161,32 +175,37 @@ class Ban_model extends CI_Model
 
   public function getBanOut($a)
   {
-    $status = "Gudang";
-    $this->db->select('*');
-    $this->db->from('ban');
-    $this->db->join('merk', 'merk.id_merk=ban.merk_ban_id');
-    $this->db->where(['id_ban' => $a]);
+    $this->db->select('*')
+      ->from('ban')
+      ->join('merk', 'merk.id_merk=ban.merk_ban_id')
+      ->where(['id_ban' => $a]);
+
     $query = $this->db->get();
+
     return $query->row();
   }
 
   public function banWithCondition($a)
   {
-    $this->db->select('*');
-    $this->db->from('ban');
-    $this->db->join('merk', 'merk.id_merk=ban.merk_ban_id');
-    $this->db->where(['id_ban' => $a]);
+    $this->db->select('*')
+      ->from('ban')
+      ->join('merk', 'merk.id_merk=ban.merk_ban_id')
+      ->where(['id_ban' => $a]);
+
     $query = $this->db->get();
+
     return $query->row();
   }
 
   public function getHistory($id)
   {
-    $this->db->select('*');
-    $this->db->from('history_ban');
-    $this->db->join('ban', 'ban.no_seri=history_ban.no_seri_history', 'left');
-    $this->db->where(['no_seri_history' => $id]);
+    $this->db->select('*')
+      ->from('history_ban')
+      ->join('ban', 'ban.no_seri=history_ban.no_seri_history', 'left')
+      ->where(['no_seri_history' => $id]);
+
     $query = $this->db->get();
+
     return $query->result();
   }
 
@@ -200,9 +219,9 @@ class Ban_model extends CI_Model
     return $this->db->get_where('ban', ['no_seri' => $seri])->row();
   }
 
-  public function addBan($databan)
+  public function addBan($data)
   {
-    $this->db->insert('ban', $databan);
+    $this->db->insert('ban', $data);
   }
 
   // public function updateStatus($dataStok, $noseri)
@@ -210,8 +229,8 @@ class Ban_model extends CI_Model
   //   $this->db->update('ban', $dataStok, $noseri);
   // }
 
-  public function moveBan($datamove)
+  public function moveBan($data)
   {
-    $this->db->insert('movement', $datamove);
+    $this->db->insert('movement', $data);
   }
 }

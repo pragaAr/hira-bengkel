@@ -5,29 +5,29 @@ class Toko_model extends CI_Model
 {
   public function getData()
   {
-    $this->datatables->select('toko.id_toko, toko.nama_toko, toko.no_telp_toko');
-    $this->datatables->from('toko');
-    $this->datatables->add_column(
-      'view',
-      '<div class="btn-group" role="group">
-          <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white btn-edit-toko" data-id="$1" data-toggle="tooltip" title="Edit">
+    $this->datatables->select('toko.id_toko, toko.nama_toko, toko.no_telp_toko')
+      ->from('toko')
+      ->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-warning text-white btn-edit-toko" data-id="$1" title="Edit">
             <i class="fas fa-pencil-alt fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete-toko" data-id="$1" data-toggle="tooltip" title="Hapus">
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-danger text-white btn-delete-toko" data-id="$1" title="Hapus">
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-      'id_toko, nama_toko, no_telp_toko'
-    );
+        'id_toko, nama_toko, no_telp_toko'
+      );
 
     return $this->datatables->generate();
   }
 
   public function getId($id)
   {
-    $this->db->select('*');
-    $this->db->from('toko');
-    $this->db->where('id_toko', $id);
+    $this->db->select('*')
+      ->from('toko')
+      ->where('id_toko', $id);
 
     return $this->db->get()->row();
   }
@@ -56,10 +56,12 @@ class Toko_model extends CI_Model
 
   public function getNamaToko($idtoko)
   {
-    $this->db->select('nama_toko');
-    $this->db->from('toko');
-    $this->db->where(['id_toko' => $idtoko]);
+    $this->db->select('nama_toko')
+      ->from('toko')
+      ->where(['id_toko' => $idtoko]);
+
     $query = $this->db->get();
+
     return $query->row();
   }
 
@@ -71,6 +73,7 @@ class Toko_model extends CI_Model
   public function addNewData($datatoko)
   {
     $this->db->insert('toko', $datatoko);
+
     return $this->db->insert_id();
   }
 

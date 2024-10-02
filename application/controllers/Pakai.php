@@ -25,12 +25,15 @@ class Pakai extends CI_Controller
 
   public function index()
   {
-    $data['title']      = 'Data Pemakaian Sparepart';
+    $data = [
+      'title' => 'Data Pemakaian Sparepart'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/pakai/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getPakai()
@@ -42,14 +45,16 @@ class Pakai extends CI_Controller
 
   public function addData()
   {
-    $data['title']  = 'Form Tambah Data Pakai Part';
-
-    $data['kd']     = $this->Pakai->cekKdPakai();
+    $data = [
+      'title' => 'Form Tambah Data Pakai Part',
+      'kd'    => $this->Pakai->cekKdPakai()
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/pakai/add', $data);
+    $this->load->view('template/footer');
   }
 
   public function cart()
@@ -76,12 +81,12 @@ class Pakai extends CI_Controller
     $date         = date('Y-m-d H:i:s', strtotime($this->input->post('tgl') . ' ' . date('H:i:s')));
 
     $datapakai = [
-      'kd_pakai'        => $kd,
-      'truck_id'        => $truckid,
-      'total_pakai'     => $totpart,
-      'user_id'         => $user,
-      'nama_montir'     => $montir,
-      'tgl_pakai'       => $date,
+      'kd_pakai'    => $kd,
+      'truck_id'    => $truckid,
+      'total_pakai' => $totpart,
+      'user_id'     => $user,
+      'nama_montir' => $montir,
+      'tgl_pakai'   => $date,
     ];
 
     $datadetail = [];
@@ -116,24 +121,30 @@ class Pakai extends CI_Controller
 
   public function detail($kd)
   {
-    $data['title']      = 'Detail Pemakaian';
-    $data['kdpakai']    = $this->Pakai->getKdPakai($kd);
-    $data['detail']     = $this->Pakai->getDetailPakai($kd);
+    $data = [
+      'title'     => 'Detail Pemakaian',
+      'kdpakai'   => $this->Pakai->getKdPakai($kd),
+      'detail'    => $this->Pakai->getDetailPakai($kd),
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/pakai/detail', $data);
+    $this->load->view('template/footer');
   }
 
   public function detailAll()
   {
-    $data['title']    = 'Detail Data Stok Keluar';
+    $data = [
+      'title' => 'Detail Data Stok Keluar'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/pakai/detail-all', $data);
+    $this->load->view('template/footer');
   }
 
   public function getDetailAll()
@@ -150,14 +161,16 @@ class Pakai extends CI_Controller
 
     $query  = $this->Pakai->getAllDataPakai($truck, $bulan);
 
-    $data['all'] = $query;
-    $data['bln'] = date('F/Y', strtotime($bulan));
+    $data = [
+      'all' => $query,
+      'bln' => date('F/Y', strtotime($bulan))
+    ];
 
     $content  = $this->load->view('trans/part/pakai/print-all', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 
@@ -168,9 +181,10 @@ class Pakai extends CI_Controller
 
   public function delete()
   {
-    $kd   = $this->input->post('kdpakai');
-    $data = $this->Pakai->delete($kd);
+    $kd = $this->input->post('kdpakai');
 
-    echo json_encode($data);
+    $query = $this->Pakai->delete($kd);
+
+    echo json_encode($query);
   }
 }

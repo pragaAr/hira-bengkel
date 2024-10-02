@@ -23,12 +23,15 @@ class Oper extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Operan Sparepart';
+    $data = [
+      'title' => 'Data Operan Sparepart'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/oper/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getOper()
@@ -40,12 +43,15 @@ class Oper extends CI_Controller
 
   public function allDataPakai()
   {
-    $data['title']    = 'Detail Pemakaian Sparepart';
+    $data = [
+      'title' => 'Detail Pemakaian Sparepart'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/oper/detail-pakai', $data);
+    $this->load->view('template/footer');
   }
 
   public function getPakaiAll()
@@ -57,18 +63,20 @@ class Oper extends CI_Controller
 
   public function getDetailPakaiForOper()
   {
-    $id   = $this->input->post('id');
-    $data = $this->Pakai->getDetailAllPakai($id);
+    $id = $this->input->post('id');
 
-    echo json_encode($data);
+    $query = $this->Pakai->getDetailAllPakai($id);
+
+    echo json_encode($query);
   }
 
   public function getDetailOperAgain()
   {
-    $kd   = $this->input->post('kd');
-    $data = $this->Oper->getOperkd($kd);
+    $kd = $this->input->post('kd');
 
-    echo json_encode($data);
+    $query = $this->Oper->getOperkd($kd);
+
+    echo json_encode($query);
   }
 
   public function operPart()
@@ -94,7 +102,7 @@ class Oper extends CI_Controller
 
     $kdoper = $this->Oper->cekKdOper();
 
-    $dataoper = array(
+    $dataoper = [
       'kd_oper'           => $kdoper,
       'kd_pakai'          => $kdpakai,
       'detail_pakai_id'   => $detailid,
@@ -109,32 +117,32 @@ class Oper extends CI_Controller
       'tgl_oper'          => $date,
       'tgl_kembali_oper'  => '0000-00-00 00:00:00',
       'user_id'           => $user
-    );
+    ];
 
-    $datahistory = array(
-      'kd_history_part'     => $kdoper,
-      'part_history_id'     => $partid,
-      'ket_history_part'    => "Dipakai " . $asal . " " . $rowpakai . " " . $sat . ", Dioper ke " . $tujuan . " " . $jml . " " . $sat,
-      'ket_trans_part'      => $ket . ", Montir : " . $montir,
-      'tgl_part_history'    => $date,
-    );
+    $datahistory = [
+      'kd_history_part'   => $kdoper,
+      'part_history_id'   => $partid,
+      'ket_history_part'  => "Dipakai " . $asal . " " . $rowpakai . " " . $sat . ", Dioper ke " . $tujuan . " " . $jml . " " . $sat,
+      'ket_trans_part'    => $ket . ", Montir : " . $montir,
+      'tgl_part_history'  => $date,
+    ];
 
-    $wherekdpakai   = array(
+    $wherekdpakai   = [
       'kd_pakai' => $kdpakai
-    );
+    ];
 
-    $totpakai = array(
-      'total_pakai'   => $min_total
-    );
+    $totpakai = [
+      'total_pakai' => $min_total
+    ];
 
-    $pakai = array(
+    $pakai = [
       'jml_pakai'     => $min_pakai,
       'status_pakai'  => $min_pakai == 0 ? 'Di Oper Semua' : 'Di Pakai'
-    );
+    ];
 
-    $where = array(
-      'id_detail_pakai'  => $detailid
-    );
+    $where = [
+      'id_detail_pakai' => $detailid
+    ];
 
     $this->Oper->addOper($dataoper, $datahistory);
     $this->Oper->updatePakai($totpakai, $wherekdpakai);
@@ -147,9 +155,11 @@ class Oper extends CI_Controller
 
   public function detail($kd)
   {
-    $data['title']  = 'Detail Operan';
-    $data['kd']     = $kd;
-    $data['oper']   = $this->Oper->getDetailOperkd($kd);
+    $data = [
+      'title' => 'Detail Operan',
+      'kd'    => $kd,
+      'oper'  => $this->Oper->getDetailOperkd($kd)
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -179,7 +189,7 @@ class Oper extends CI_Controller
 
     $kdoper     = $this->Oper->cekKdOper();
 
-    $dataoper = array(
+    $dataoper = [
       'kd_oper'           => $kdoper,
       'kd_pakai'          => $kdpakai,
       'detail_pakai_id'   => $detailid,
@@ -194,29 +204,29 @@ class Oper extends CI_Controller
       'tgl_oper'          => $date,
       'tgl_kembali_oper'  => '0000-00-00 00:00:00',
       'user_id'           => $user
-    );
+    ];
 
-    $updateoldoper = array(
+    $updateoldoper = [
       'jml_oper'      => $min_pakai,
       'status_oper'   => "Di oper ke " . $tujuan,
       'user_id'       => $user
-    );
+    ];
 
-    $kdoperold = array(
+    $kdoperold = [
       'kd_oper'   => $kdpakai
-    );
+    ];
 
-    $historyoper = array(
+    $historyoper = [
       'kd_history_part'     => $kdoper,
       'part_history_id'     => $partid,
       'ket_history_part'    => "Di Oper dari " . $asal,
       'ket_trans_part'      => "Di oper ke " . $tujuan . ", " . "Montir : " . $montir,
       'tgl_part_history'    => $date,
-    );
+    ];
 
-    $data = $this->Oper->addOperan($dataoper, $historyoper, $updateoldoper, $kdoperold);
+    $query = $this->Oper->addOperan($dataoper, $historyoper, $updateoldoper, $kdoperold);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function pengembalian()
@@ -246,74 +256,74 @@ class Oper extends CI_Controller
       $totpakai     = $querypakai->total_pakai + $jmloper;
       $jmlpakai     = $querydetail->jml_pakai + $jmloper;
 
-      $datakembalipakai = array(
+      $datakembalipakai = [
         'total_pakai' => $totpakai,
         'tgl_pakai'   => $date
-      );
+      ];
 
-      $datakembalidetail = array(
+      $datakembalidetail = [
         'jml_pakai'     => $jmlpakai,
         'status_pakai'  => 'Di pakai',
-      );
+      ];
 
-      $dataoper = array(
+      $dataoper = [
         'jml_oper'          => $operjml,
         'status_oper'       => "Dikembalikan",
         'tgl_kembali_oper'  => $date
-      );
+      ];
 
-      $dataidoper  = array(
+      $dataidoper  = [
         'id_oper' => $idoper
-      );
+      ];
 
-      $datakdpinjam = array(
+      $datakdpinjam = [
         'kd_pakai' => $kdpakai
-      );
+      ];
 
-      $datakddetail = array(
+      $datakddetail = [
         'id_detail_pakai' => $iddetail
-      );
+      ];
 
-      $history = array(
+      $history = [
         'kd_history_part'   => $kdoper,
         'part_history_id'   => $part,
         'ket_history_part'  => "Dari " . $truckasal . " " . "Dioper ke " . $truckoper,
         'ket_trans_part'    => "Dikembalikan ke " . $truckasal,
         'tgl_part_history'  => $date,
-      );
+      ];
 
-      $data = $this->Oper->updateOper($datakembalipakai, $datakembalidetail, $dataoper, $dataidoper, $datakdpinjam, $datakddetail, $history);
+      $query = $this->Oper->updateOper($datakembalipakai, $datakembalidetail, $dataoper, $dataidoper, $datakdpinjam, $datakddetail, $history);
     } elseif ($cekkdpakai == 0) {
 
-      $datakembalioper = array(
+      $datakembalioper = [
         'jml_oper'    => $jmloper,
         'status_oper' => "Belum dikembalikan"
-      );
+      ];
 
-      $dataidkembalioper = array(
+      $dataidkembalioper = [
         'kd_oper' => $kdpakai
-      );
+      ];
 
-      $dataupdateoper = array(
+      $dataupdateoper = [
         'jml_oper'    => 0,
         'status_oper' => "Dikembalikan"
-      );
+      ];
 
-      $kodeoper = array(
-        'kd_oper'   => $kd
-      );
+      $kodeoper = [
+        'kd_oper' => $kd
+      ];
 
-      $history = array(
+      $history = [
         'kd_history_part'   => $kdoper,
         'part_history_id'   => $part,
         'ket_history_part'  => "Dari " . $truckasal . " " . "Dioper ke " . $truckoper,
         'ket_trans_part'    => "Dikembalikan ke " . $truckasal,
         'tgl_part_history'  => $date,
-      );
+      ];
 
-      $data = $this->Oper->updateOperan($datakembalioper, $dataidkembalioper, $dataupdateoper, $kodeoper, $history);
+      $query = $this->Oper->updateOperan($datakembalioper, $dataidkembalioper, $dataupdateoper, $kodeoper, $history);
     }
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 }

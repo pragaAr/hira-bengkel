@@ -120,10 +120,6 @@ $("#stokTables").DataTable({
 		},
 	],
 
-	fnDrawCallback: function (oSettings) {
-		$('[data-toggle="tooltip"]').tooltip();
-	},
-
 	rowCallback: function (row, data, iDisplayIndex) {
 		var info = this.fnPagingInfo();
 		var page = info.iPage;

@@ -15,7 +15,7 @@ class Stok extends CI_Controller
     $this->load->model('Stok_model', 'Stok');
     $this->load->model('Merk_model', 'Merk');
 
-    $this->id = $this->session->userdata('id_user');
+    $this->id   = $this->session->userdata('id_user');
     $this->user = $this->session->userdata('user_role');
 
     if (empty($this->session->userdata('id_user'))) {
@@ -54,43 +54,26 @@ class Stok extends CI_Controller
 
   public function getListStok()
   {
-    $keyword = $this->input->get('q');
+    $key  = $this->input->get('q');
 
-    if (!$keyword) {
-      $data = $this->Stok->getDataStok();
+    $data = !$key ? $this->Stok->getDataStok() : $this->Stok->getSearchDataStok($key);
 
-      $response = [];
-      foreach ($data as $stok) {
-        $response[] = [
-          'id'          => $stok->id_part,
-          'text'        => ucwords($stok->jenis_part) . ' - ' . ucwords($stok->nama_merk),
-          'namapart'    => ucwords($stok->jenis_part),
-          'merkpart'    => ucwords($stok->nama_merk),
-          'merkid'      => ucwords($stok->id_merk),
-          'satuanpart'  => ucwords($stok->sat),
-          'baru'        => ucwords($stok->part_baru),
-          'bekas'       => ucwords($stok->part_bekas)
-        ];
-      }
-    } else {
-      $data = $this->Stok->getSearchDataStok($keyword);
+    $res  = [];
 
-      $response = [];
-      foreach ($data as $stok) {
-        $response[] = [
-          'id'          => $stok->id_part,
-          'text'        => ucwords($stok->jenis_part) . ' - ' . ucwords($stok->nama_merk),
-          'namapart'    => ucwords($stok->jenis_part),
-          'merkpart'    => ucwords($stok->nama_merk),
-          'merkid'      => ucwords($stok->id_merk),
-          'satuanpart'  => ucwords($stok->sat),
-          'baru'        => ucwords($stok->part_baru),
-          'bekas'       => ucwords($stok->part_bekas)
-        ];
-      }
+    foreach ($data as $stok) {
+      $res[] = [
+        'id'          => $stok->id_part,
+        'text'        => ucwords($stok->jenis_part) . ' - ' . ucwords($stok->nama_merk),
+        'namapart'    => ucwords($stok->jenis_part),
+        'merkpart'    => ucwords($stok->nama_merk),
+        'merkid'      => ucwords($stok->id_merk),
+        'satuanpart'  => ucwords($stok->sat),
+        'baru'        => ucwords($stok->part_baru),
+        'bekas'       => ucwords($stok->part_bekas)
+      ];
     }
 
-    echo json_encode($response);
+    echo json_encode($res);
   }
 
   public function create()
@@ -150,10 +133,11 @@ class Stok extends CI_Controller
 
   public function delete()
   {
-    $id   = $this->input->post('idstok');
-    $data = $this->Stok->deleteStok($id);
+    $id = $this->input->post('idstok');
 
-    echo json_encode($data);
+    $query = $this->Stok->deleteStok($id);
+
+    echo json_encode($query);
   }
 
   public function addSelect()

@@ -14,21 +14,21 @@
           </div>
 
         </div>
-        <div class="card-body">
+        <div class="card-body" style="font-size:13px;">
           <div class="table-responsive">
             <table class="table table-bordered table-hover" id="stokTables" width="100%">
               <thead class="thead-dark text-center">
                 <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Nama</th>
-                  <th scope="col">Merk</th>
-                  <th scope="col">Sat</th>
-                  <th scope="col">Baru</th>
-                  <th scope="col">Bks</th>
-                  <th scope="col">Jml</th>
-                  <th scope="col">Rak</th>
-                  <th scope="col">In</th>
-                  <th scope="col">Aksi</th>
+                  <th class="align-middle">No</th>
+                  <th class="align-middle">Nama</th>
+                  <th class="align-middle">Merk</th>
+                  <th class="align-middle">Sat</th>
+                  <th class="align-middle">Baru</th>
+                  <th class="align-middle">Bekas</th>
+                  <th class="align-middle">Jml</th>
+                  <th class="align-middle">Rak</th>
+                  <th class="align-middle">In</th>
+                  <th class="align-middle">Aksi</th>
                 </tr>
               </thead>
               <tbody style="font-size:13px;">

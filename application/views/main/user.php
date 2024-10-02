@@ -16,15 +16,15 @@
         </div>
         <div class="card-body" style="font-size:13px;">
           <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="userTables" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover" id="userTables" width="100%">
               <thead class="thead-dark text-center">
                 <tr>
-                  <th scope="col" class="align-middle">No</th>
-                  <th scope="col" class="align-middle">Nama </th>
-                  <th scope="col" class="align-middle">Uname</th>
-                  <th scope="col" class="align-middle">Telp</th>
-                  <th scope="col" class="align-middle">Role</th>
-                  <th scope="col" class="align-middle">Actions</th>
+                  <th class="align-middle">No</th>
+                  <th class="align-middle">Nama </th>
+                  <th class="align-middle">Uname</th>
+                  <th class="align-middle">Telp</th>
+                  <th class="align-middle">Role</th>
+                  <th class="align-middle">Aksi</th>
                 </tr>
               </thead>
               <tbody>

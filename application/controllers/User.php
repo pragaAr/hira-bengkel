@@ -106,9 +106,10 @@ class User extends CI_Controller
 
   public function delete()
   {
-    $id   = $this->input->post('iduser');
-    $data = $this->User->deleteUser($id);
+    $id = $this->input->post('iduser');
 
-    echo json_encode($data);
+    $query = $this->User->deleteUser($id);
+
+    echo json_encode($query);
   }
 }

@@ -23,12 +23,15 @@ class Ban extends CI_Controller
 
   public function index()
   {
-    $data['title']  = 'Stok Ban';
+    $data = [
+      'title' => 'Stok Ban'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('main/stok/ban/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getBan()
@@ -40,92 +43,63 @@ class Ban extends CI_Controller
 
   public function getDataBanVulk()
   {
-    $keyword = $this->input->get('q');
+    $key  = $this->input->get('q');
 
-    if (!$keyword) {
+    $data = !$key ? $this->Ban->selectBan() : $this->Ban->selectSearchBan($key);
 
-      $data = $this->Ban->selectBan();
+    $res  = [];
 
-      $response = [];
-      foreach ($data as $ban) {
-        $response[] = [
-          'id' => $ban->id_ban,
-          'text' => strtoupper($ban->no_seri),
-          'merk' => strtoupper($ban->nama_merk),
-          'size' => strtoupper($ban->ukuran_ban),
-        ];
-      }
-
-      echo json_encode($response);
-    } else {
-      $data = $this->Ban->selectSearchBan($keyword);
-
-      $response = [];
-      foreach ($data as $ban) {
-        $response[] = [
-          'id' => $ban->id_ban,
-          'text' => strtoupper($ban->no_seri),
-          'merk' => strtoupper($ban->nama_merk),
-          'size' => strtoupper($ban->ukuran_ban),
-        ];
-      }
-
-      echo json_encode($response);
+    foreach ($data as $ban) {
+      $res[] = [
+        'id' => $ban->id_ban,
+        'text' => strtoupper($ban->no_seri),
+        'merk' => strtoupper($ban->nama_merk),
+        'size' => strtoupper($ban->ukuran_ban),
+      ];
     }
+
+    echo json_encode($res);
   }
 
   public function getId()
   {
-    $id   = $this->input->post('noseri');
-    $data = $this->Ban->getId($id);
+    $id = $this->input->post('noseri');
 
-    echo json_encode($data);
+    $query = $this->Ban->getId($id);
+
+    echo json_encode($query);
   }
 
   public function getListBan()
   {
-    $keyword = $this->input->get('q');
+    $key  = $this->input->get('q');
 
-    if (!$keyword) {
-      $data = $this->Ban->getDataBan();
+    $data = !$key ? $this->Ban->getDataBan() : $this->Ban->getSearchDataBan($key);
 
-      $response = [];
-      foreach ($data as $ban) {
-        $response[] = [
-          'id'          => $ban->id_ban,
-          'text'        => ucwords($ban->no_seri) . ' - ' . ucwords($ban->nama_merk),
-          'noseri'      => ucwords($ban->no_seri),
-          'merkban'     => ucwords($ban->nama_merk),
-          'merkid'      => ucwords($ban->id_merk),
-          'stat'        => ucwords($ban->vulk),
-          'ukuran'      => ucwords($ban->ukuran_ban),
-        ];
-      }
-    } else {
-      $data = $this->Ban->getSearchDataBan($keyword);
+    $res  = [];
 
-      $response = [];
-      foreach ($data as $ban) {
-        $response[] = [
-          'id'          => $ban->id_ban,
-          'text'        => ucwords($ban->no_seri) . ' - ' . ucwords($ban->nama_merk),
-          'noseri'      => ucwords($ban->no_seri),
-          'merkban'     => ucwords($ban->nama_merk),
-          'merkid'      => ucwords($ban->id_merk),
-          'stat'        => ucwords($ban->vulk),
-          'ukuran'      => ucwords($ban->ukuran_ban),
-        ];
-      }
+    foreach ($data as $ban) {
+      $res[] = [
+        'id'      => $ban->id_ban,
+        'text'    => ucwords($ban->no_seri) . ' - ' . ucwords($ban->nama_merk),
+        'noseri'  => ucwords($ban->no_seri),
+        'merkban' => ucwords($ban->nama_merk),
+        'merkid'  => ucwords($ban->id_merk),
+        'stat'    => ucwords($ban->vulk),
+        'ukuran'  => ucwords($ban->ukuran_ban),
+      ];
     }
 
-    echo json_encode($response);
+    echo json_encode($res);
   }
 
   public function riwayat($id)
   {
-    $data['title']      = "Riwayat Ban";
-    $data['ban']        = $this->Ban->getId($id);
-    $data['history']    = $this->Ban->getHistory($id);
+    $data = [
+      'title'   => "Riwayat Ban",
+      'ban'     => $this->Ban->getId($id),
+      'history' => $this->Ban->getHistory($id),
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -136,29 +110,31 @@ class Ban extends CI_Controller
 
   public function ubahKondisi()
   {
-    $datamove = array(
+    $data = [
       'no_seri'   => $this->input->post('seri'),
       'merk'      => $this->input->post('merk'),
       'ukuran'    => $this->input->post('ukuran'),
       'movement'  => $this->input->post('aksi'),
       'tgl_move'  => date('Y-m-d H:i:s'),
       'user_id'   => $this->session->userdata('id_user')
-    );
+    ];
 
-    $noseri = array(
-      'no_seri'   => $this->input->post('seri')
-    );
+    $noseri = [
+      'no_seri' => $this->input->post('seri')
+    ];
 
-    $data = $this->Movement->addMove($datamove, $noseri);
+    $query = $this->Movement->addMove($data, $noseri);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function print()
   {
-    $data['ban']  = $this->Ban->getBan();
+    $data = [
+      'ban' => $this->Ban->getBan()
+    ];
 
-    $content      = $this->load->view('main/stok/ban/print', $data, true);
+    $content = $this->load->view('main/stok/ban/print', $data, true);
 
     $mpdf = new Mpdf();
 

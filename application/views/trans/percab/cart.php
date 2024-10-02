@@ -28,7 +28,7 @@
     <input type="hidden" name="part_hidden[]" value="<?= $this->input->post('part') ?>">
   </td>
 
-  <td class="ongkos">
+  <td class="text-right ongkos">
     <?= number_format($this->input->post('ongkos')) ?>
     <input type="hidden" name="ongkos_hidden[]" value="<?= $this->input->post('ongkos') ?>">
   </td>

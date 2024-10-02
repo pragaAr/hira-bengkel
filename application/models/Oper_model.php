@@ -16,14 +16,22 @@ class Oper_model extends CI_Model
 
   public function getData()
   {
-    $this->datatables->select('a.id_oper, a.kd_oper, a.detail_pakai_id, a.kd_pakai, a.nama_montir_oper as montir, a.jml_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, b.plat_no_truck as plat_asal, b.merk_truck as merk_asal, b.jenis_truck as jenis_asal, c.plat_no_truck as plat_oper, c.merk_truck as merk_oper, c.jenis_truck as jenis_oper, d.jenis_part, d.sat, e.nama_merk')
+    $this->datatables->select('
+                              a.id_oper, a.kd_oper, a.detail_pakai_id, 
+                              a.kd_pakai, a.nama_montir_oper as montir, 
+                              a.jml_oper, a.ket_oper, a.status_oper, 
+                              a.tgl_oper, a.tgl_kembali_oper, 
+                              b.plat_no_truck as plat_asal, b.merk_truck as merk_asal, b.jenis_truck as jenis_asal, 
+                              c.plat_no_truck as plat_oper, c.merk_truck as merk_oper, c.jenis_truck as jenis_oper, 
+                              d.jenis_part, d.sat, 
+                              e.nama_merk
+                              ')
       ->from('oper_part a')
       ->join('truck b', 'b.id_truck = a.truck_asal_id')
       ->join('truck c', 'c.id_truck = a.truck_oper_id')
       ->join('stok_part d', 'd.id_part = a.part_id', 'left')
       ->join('merk e', 'e.id_merk = a.merk_id', 'left')
 
-      // --for searching needed
       ->add_column(
         'view',
         '<div class="btn-group" role="group"> 
@@ -31,7 +39,6 @@ class Oper_model extends CI_Model
       </div>',
         'id_oper, kd_oper, kd_pakai, montir, jml_oper, ket_oper, status_oper, tgl_oper, tgl_kembali_oper, plat_asal, merk_asal, jenis_asal, plat_oper, merk_oper, jenis_oper, jenis_part, sat, nama_merk'
       );
-    // --for searching needed
 
     $results = $this->datatables->generate();
 
@@ -42,19 +49,19 @@ class Oper_model extends CI_Model
       if ($row['jml_oper'] != 0) {
 
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="javascript:void(0);" class="btn btn-sm btn-info text-white btn-kembali" data-toggle="tooltip" title="Kembalikan" data-kd="' . $row['kd_oper'] . '"">
+                            <a href="javascript:void(0);" class="btn btn-sm border border-light btn-info text-white btn-kembali" title="Kembalikan" data-kd="' . $row['kd_oper'] . '"">
                               <i class="fas fa-angle-double-right fa-sm"></i>
                             </a>
-                            <a href="javascript:void(0);" class="btn btn-sm btn-warning text-white btn-operan" data-toggle="tooltip" title="Oper Lagi" data-kd="' . $row['kd_oper'] . '"">
+                            <a href="javascript:void(0);" class="btn btn-sm border border-light btn-warning text-white btn-operan" title="Oper Lagi" data-kd="' . $row['kd_oper'] . '"">
                               <i class="fas fa-retweet fa-sm"></i>
                             </a>
-                            <a href="http://localhost/he-bengkel/oper/detail/' . $row['kd_oper'] . '" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail"">
+                            <a href="http://localhost/he-bengkel/oper/detail/' . $row['kd_oper'] . '" class="btn btn-sm border border-light btn-success text-white" title="Detail"">
                               <i class="fas fa-eye fa-sm"></i>
                             </a>
                           </div>';
       } else {
         $row['view'] = '<div class="btn-group" role="group">
-                            <a href="http://localhost/he-bengkel/oper/detail/' . $row['kd_oper'] . '" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="History"">
+                            <a href="http://localhost/he-bengkel/oper/detail/' . $row['kd_oper'] . '" class="btn btn-sm border border-light btn-success text-white" title="History"">
                               <i class="fas fa-eye fa-sm"></i>
                             </a>
                           </div>';
@@ -68,15 +75,24 @@ class Oper_model extends CI_Model
 
   public function getOper()
   {
-    $this->db->select('t1.plat_no_truck truck_asal_id, t1.merk_truck merk_truck_asal, t1.jenis_truck jenis_truck_asal, t2.plat_no_truck truck_oper_id, t2.merk_truck merk_truck_oper, t2.jenis_truck jenis_truck_oper, id_oper, kd_oper, kd_pakai, detail_pakai_id, p1.jenis_part part_id, p1.sat sat_oper, m1.nama_merk merk_id, jml_oper, nama_montir_oper, ket_oper, status_oper, tgl_oper, tgl_kembali_oper, u1.id_user user_id');
-    $this->db->from('oper_part');
-    $this->db->join('truck t1', 't1.id_truck=oper_part.truck_asal_id');
-    $this->db->join('truck t2', 't2.id_truck=oper_part.truck_oper_id');
-    $this->db->join('stok_part p1', 'p1.id_part = oper_part.part_id', 'left');
-    $this->db->join('merk m1', 'm1.id_merk = oper_part.merk_id', 'left');
-    $this->db->join('user u1', 'u1.id_user = oper_part.user_id', 'left');
-    $this->db->order_by('oper_part.id_oper', 'ASC');
+    $this->db->select('
+    b.plat_no_truck truck_asal_id, b.merk_truck merk_truck_asal, b.jenis_truck jenis_truck_asal, 
+    c.plat_no_truck truck_oper_id, c.merk_truck merk_truck_oper, c.jenis_truck jenis_truck_oper, 
+    a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, 
+    a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, 
+    d.jenis_part part_id, d.sat sat_oper, 
+    e.nama_merk merk_id, 
+    f.id_user user_id')
+      ->from('oper_part a')
+      ->join('truck b', 'b.id_truck = a.truck_asal_id')
+      ->join('truck c', 'c.id_truck = a.truck_oper_id')
+      ->join('stok_part d', 'd.id_part = a.part_id', 'left')
+      ->join('merk e', 'e.id_merk = a.merk_id', 'left')
+      ->join('user f', 'f.id_user = a.user_id', 'left')
+      ->order_by('a.id_oper', 'ASC');
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 

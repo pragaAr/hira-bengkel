@@ -12,10 +12,10 @@ class Percab_model extends CI_Model
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          <a href="http://localhost/he-bengkel/percab/detail/$2" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail">
+          <a href="http://localhost/he-bengkel/percab/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
             <i class="fas fa-eye fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-no="$2" data-toggle="tooltip" title="Hapus">
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-danger text-white btn-delete" data-no="$2" title="Hapus">
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
@@ -49,10 +49,14 @@ class Percab_model extends CI_Model
 
   public function detailData($no)
   {
-    $this->db->select('a.bengkel, a.tglnota, a.sopir, a.part, a.ongkos, a.ketpercab, b.plat_no_truck')
+    $this->db->select('
+                      a.bengkel, a.tglnota, 
+                      a.sopir, a.part, a.ongkos, 
+                      a.ketpercab, b.plat_no_truck
+                      ')
       ->from('detail_percab a')
       ->join('truck b', 'b.id_truck = a.truckid')
-      ->where('nosurat', $no);
+      ->where('a.nosurat', $no);
 
     $query = $this->db->get()->result();
 
@@ -61,17 +65,20 @@ class Percab_model extends CI_Model
 
   public function getAllDetailData()
   {
-    $this->datatables->select('a.id_detailpercab, a.nosurat, c.cabang, a.bengkel, a.tglnota, a.part, b.plat_no_truck, a.sopir, a.ongkos, a.ketpercab')
+    $this->datatables->select('
+                              a.id_detailpercab, a.nosurat, 
+                              c.cabang, a.bengkel, a.tglnota, 
+                              a.part, b.plat_no_truck, 
+                              a.sopir, a.ongkos, a.ketpercab
+                              ')
       ->from('detail_percab a')
       ->join('truck b', 'b.id_truck = a.truckid', 'left')
       ->join('percab c', 'c.nosurat = a.nosurat')
 
-      // --for searching needed
       ->add_column(
         'view',
         'id_detailpercab, nosurat, cabang, bengkel, tglnota, part, plat_no_truck, sopir, ongkos, ketpercab'
       );
-    // --for searching needed
 
     return $this->datatables->generate();
   }
@@ -93,11 +100,12 @@ class Percab_model extends CI_Model
 
   public function chartThisMonth()
   {
-    $this->db->select('*');
-    $this->db->from('percab');
-    $this->db->where('MONTH(percab.tglsurat)', date('m'));
-    $this->db->where('YEAR(percab.tglsurat)', date('Y'));
-    $this->db->group_by('percab.nosurat');
+    $this->db->select('*')
+      ->from('percab')
+      ->where('MONTH(percab.tglsurat)', date('m'))
+      ->where('YEAR(percab.tglsurat)', date('Y'))
+      ->group_by('percab.nosurat');
+
     $query = $this->db->get()->result_array();
 
     return $query;
@@ -105,11 +113,11 @@ class Percab_model extends CI_Model
 
   public function chartFilterMonth($year, $month)
   {
-    $this->db->select('*');
-    $this->db->from('percab');
-    $this->db->where('YEAR(percab.tglsurat)', $year);
-    $this->db->where('MONTH(percab.tglsurat)', $month);
-    $this->db->group_by('percab.nosurat');
+    $this->db->select('*')
+      ->from('percab')
+      ->where('YEAR(percab.tglsurat)', $year)
+      ->where('MONTH(percab.tglsurat)', $month)
+      ->group_by('percab.nosurat');
 
     $query = $this->db->get()->result_array();
 
@@ -119,12 +127,14 @@ class Percab_model extends CI_Model
   public function addData($data, $detail)
   {
     $this->db->insert('percab', $data);
+
     $this->db->insert_batch('detail_percab', $detail);
   }
 
   public function deleteData($no)
   {
     $this->db->delete('percab', ['nosurat' => $no]);
+
     $this->db->delete('detail_percab', ['nosurat' => $no]);
   }
 }

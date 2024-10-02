@@ -24,12 +24,15 @@ class Beli extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Stok Masuk';
+    $data = [
+      'title' => 'Data Stok Masuk'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/beli/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getBeli()
@@ -41,13 +44,16 @@ class Beli extends CI_Controller
 
   public function addData()
   {
-    $data['title']  = 'Form Tambah Data Stok Masuk';
-    $data['kd']     = $this->Beli->cekDo();
+    $data = [
+      'title' => 'Tambah Data Stok Masuk',
+      'kd'    => $this->Beli->cekDo(),
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/beli/add', $data);
+    $this->load->view('template/footer');
   }
 
   public function proses()
@@ -125,9 +131,9 @@ class Beli extends CI_Controller
 
   public function getPart()
   {
-    $data = $this->Stok_model->jenisPart($_POST['id_part']);
+    $query = $this->Stok_model->jenisPart($_POST['id_part']);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function cart()
@@ -137,12 +143,14 @@ class Beli extends CI_Controller
 
   public function detail($kd)
   {
-    $data['title']        = 'Detail Stok Masuk';
-    $data['kdbeli']       = $this->Beli->getKdBeli($kd);
-    $data['total']        = $this->Beli->getTotalBayar($kd);
-    $data['detail']       = $this->Beli->getDetailBeli($kd);
-    $data['sumtotal']     = $this->Beli->getSumId($kd);
-    $data['retur']        = $this->Retur->getPartMasukRetur($kd);
+    $data = [
+      'title'     => 'Detail Stok Masuk',
+      'kdbeli'    => $this->Beli->getKdBeli($kd),
+      'total'     => $this->Beli->getTotalBayar($kd),
+      'detail'    => $this->Beli->getDetailBeli($kd),
+      'sumtotal'  => $this->Beli->getSumId($kd),
+      'retur'     => $this->Retur->getPartMasukRetur($kd),
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -159,6 +167,7 @@ class Beli extends CI_Controller
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/beli/detail-all', $data);
+    $this->load->view('template/footer');
   }
 
   public function getDetailAll()
@@ -172,49 +181,49 @@ class Beli extends CI_Controller
   {
     $id = $this->input->post('id');
 
-    $data = $this->Beli->getDetailById($id);
+    $query = $this->Beli->getDetailById($id);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function pelunasan()
   {
     $kd = $this->input->post('kd');
 
-    $statusdata = array(
+    $data = [
       'status_bayar'  => 'Lunas',
       'tgl_pelunasan' => date('Y-m-d H:i:s')
-    );
+    ];
 
-    $where = array(
-      'kd_beli'   => $kd,
-    );
+    $where = [
+      'kd_beli'  => $kd,
+    ];
 
-    $data = $this->Beli->Pelunasan($statusdata, $where);
+    $query = $this->Beli->Pelunasan($data, $where);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function retur()
   {
-    $id             = $this->input->post('id');
-    $kd             = $this->input->post('kd');
-    $toko           = $this->input->post('toko');
-    $idtoko         = $this->input->post('tokoid');
-    $idmerk         = $this->input->post('merkid');
-    $idpart         = $this->input->post('partid');
-    $dskrtr         = preg_replace("/[^0-9\.]/", "", $this->input->post('diskon'));
-    $ketretur       = $this->input->post('ket');
-    $jml            = $this->input->post('jmlretur');
-    $sat            = $this->input->post('sat');
-    $hargapcs       = preg_replace("/[^0-9\.]/", "", $this->input->post('hrgpcs'));
-    $statusretur    = $this->input->post('stat');
-    $date           = date('Y-m-d H:i:s');
-    $user           = $this->session->userdata('id_user');
+    $id           = $this->input->post('id');
+    $kd           = $this->input->post('kd');
+    $toko         = $this->input->post('toko');
+    $idtoko       = $this->input->post('tokoid');
+    $idmerk       = $this->input->post('merkid');
+    $idpart       = $this->input->post('partid');
+    $dskrtr       = preg_replace("/[^0-9\.]/", "", $this->input->post('diskon'));
+    $ketretur     = $this->input->post('ket');
+    $jml          = $this->input->post('jmlretur');
+    $sat          = $this->input->post('sat');
+    $hargapcs     = preg_replace("/[^0-9\.]/", "", $this->input->post('hrgpcs'));
+    $statusretur  = $this->input->post('stat');
+    $date         = date('Y-m-d H:i:s');
+    $user         = $this->session->userdata('id_user');
 
-    $kdretur        = $this->Retur->cekKdRetur();
+    $kdretur      = $this->Retur->cekKdRetur();
 
-    $datadetailretur = array(
+    $datadetailretur = [
       'detail_beli_id'           => $id,
       'kd_beli'                  => $kd,
       'kd_retur'                 => $kdretur,
@@ -224,50 +233,54 @@ class Beli extends CI_Controller
       'jml_beli_retur'           => $jml,
       'harga_pcs_retur'          => $hargapcs,
       'diskon_retur'             => $dskrtr,
-    );
+    ];
 
-    $databeli = array(
-      'retur'       => 1,
-      'user_id'     => $user
-    );
+    $databeli = [
+      'retur'   => 1,
+      'user_id' => $user
+    ];
 
-    $insertdataretur = array(
-      'kd_retur'     => $kdretur,
-      'kd_beli'      => $kd,
-      'toko_id'      => $idtoko,
-      'jml_retur'    => $jml,
-      'ket_retur'    => $ketretur,
-      'tgl_retur'    => $date,
-      'user_id'      => $user
-    );
+    $insertdataretur = [
+      'kd_retur'  => $kdretur,
+      'kd_beli'   => $kd,
+      'toko_id'   => $idtoko,
+      'jml_retur' => $jml,
+      'ket_retur' => $ketretur,
+      'tgl_retur' => $date,
+      'user_id'   => $user
+    ];
 
-    $history = array(
-      'kd_history_part'     => $kdretur,
-      'part_history_id'     => $idpart,
-      'ket_history_part'    => "Retur ke " . $toko . " " . $jml . " " . $sat,
-      'ket_trans_part'      => $ketretur,
-      'tgl_part_history'    => $date,
-    );
+    $history = [
+      'kd_history_part'   => $kdretur,
+      'part_history_id'   => $idpart,
+      'ket_history_part'  => "Retur ke " . $toko . " " . $jml . " " . $sat,
+      'ket_trans_part'    => $ketretur,
+      'tgl_part_history'  => $date,
+    ];
 
-    $data = $this->Beli->retur($kd,  $databeli);
-    $data = $this->Retur->returPart($insertdataretur, $history, $datadetailretur);
+    $query = $this->Beli->retur($kd,  $databeli);
+    $query = $this->Retur->returPart($insertdataretur, $history, $datadetailretur);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function print($kd)
   {
-    $data['beli']     = $this->Beli->getKdBeli($kd);
-    $data['all']      = $this->Beli->getDetailBeli($kd);
-    $data['total']    = $this->Beli->getTotalBayar($kd);
-    $data['sumtotal'] = $this->Beli->getSumId($kd);
-    $data['retur']    = $this->Retur->getPartMasukRetur($kd);
+    $data = [
+      'beli'     => $this->Beli->getKdBeli($kd),
+      'all'      => $this->Beli->getDetailBeli($kd),
+      'total'    => $this->Beli->getTotalBayar($kd),
+      'sumtotal' => $this->Beli->getSumId($kd),
+      'retur'    => $this->Retur->getPartMasukRetur($kd),
+    ];
+
     $do = strtoupper($kd);
+
     $content  = $this->load->view('trans/part/beli/print', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 
@@ -286,15 +299,17 @@ class Beli extends CI_Controller
     $qtoko  = $this->Toko->getId($toko);
     $query  = $this->Beli->getAllDataBeli($toko, $bulan);
 
-    $data['all']  = $query;
-    $data['toko'] = $qtoko->nama_toko;
-    $data['bln']  = date('F/Y', strtotime($bulan));
+    $data = [
+      'all'  => $query,
+      'toko' => $qtoko->nama_toko,
+      'bln'  => date('F/Y', strtotime($bulan)),
+    ];
 
     $content  = $this->load->view('trans/part/beli/print-all', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 
@@ -307,9 +322,10 @@ class Beli extends CI_Controller
 
   public function delete()
   {
-    $kd   = $this->input->post('kdbeli');
-    $data = $this->Beli->delete($kd);
+    $kd = $this->input->post('kdbeli');
 
-    echo json_encode($data);
+    $query = $this->Beli->delete($kd);
+
+    echo json_encode($query);
   }
 }
