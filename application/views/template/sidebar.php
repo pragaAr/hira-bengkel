@@ -20,6 +20,20 @@
     Master Data
   </div>
 
+  <?php if ($this->session->userdata('user_role') == 'admin') { ?>
+    <li class="nav-item <?= $this->uri->segment(1) == 'user' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+      <a class="nav-link" href="<?= base_url('user') ?>">
+        <i class="fas fa-fw fa-users"></i>
+        <span>User</span></a>
+    </li>
+  <?php } ?>
+
+  <li class="nav-item <?= $this->uri->segment(1) == 'merk' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+    <a class="nav-link" href="<?= base_url('merk') ?>">
+      <i class="fas fa-fw fa-tag"></i>
+      <span>Merk</span></a>
+  </li>
+
   <li class="nav-item <?= $this->uri->segment(1) == 'stok' || $this->uri->segment(1) == 'ban' ? 'active' : '' ?>">
     <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapseStok" aria-expanded="true" aria-controls="collapseStok">
       <i class="fas fa-box-open"></i>
@@ -33,22 +47,16 @@
     </div>
   </li>
 
-  <li class="nav-item <?= $this->uri->segment(1) == 'merk' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
-    <a class="nav-link" href="<?= base_url('merk') ?>">
-      <i class="fas fa-fw fa-tag"></i>
-      <span>Merk</span></a>
+  <li class="nav-item <?= $this->uri->segment(1) == 'toko' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
+    <a class="nav-link" href="<?= base_url('toko') ?>">
+      <i class="fas fa-fw fa-store"></i>
+      <span>Toko</span></a>
   </li>
 
   <li class="nav-item <?= $this->uri->segment(1) == 'truck' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
     <a class="nav-link" href="<?= base_url('truck') ?>">
       <i class="fas fa-fw fa-truck"></i>
       <span>Truck</span></a>
-  </li>
-
-  <li class="nav-item <?= $this->uri->segment(1) == 'toko' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
-    <a class="nav-link" href="<?= base_url('toko') ?>">
-      <i class="fas fa-fw fa-store"></i>
-      <span>Toko</span></a>
   </li>
 
   <hr class="sidebar-divider">
@@ -95,14 +103,6 @@
       <i class="fas fa-fw fa-tools"></i>
       <span>Perbaikan Cabang</span></a>
   </li>
-
-  <?php if ($this->session->userdata('user_role') == 'admin') { ?>
-    <li class="nav-item <?= $this->uri->segment(1) == 'user' || $this->uri->segment(1) == '' ? 'active' : '' ?>">
-      <a class="nav-link" href="<?= base_url('user') ?>">
-        <i class="fas fa-fw fa-users"></i>
-        <span>User</span></a>
-    </li>
-  <?php } ?>
 
   <hr class="sidebar-divider d-none d-md-block">
 
