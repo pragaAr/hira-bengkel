@@ -15,6 +15,9 @@ class Stok extends CI_Controller
     $this->load->model('Stok_model', 'Stok');
     $this->load->model('Merk_model', 'Merk');
 
+    $this->id = $this->session->userdata('id_user');
+    $this->user = $this->session->userdata('user_role');
+
     if (empty($this->session->userdata('id_user'))) {
       $this->session->set_flashdata('flashceklogin', 'Silahkan Login terlebih dahulu!');
       redirect('auth');
@@ -23,19 +26,22 @@ class Stok extends CI_Controller
 
   public function index()
   {
-    $data['title']    = "Stok Sparepart";
+    $data = [
+      'title' => "Stok Sparepart"
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('main/stok/part/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getStok()
   {
     header('Content-Type: application/json');
 
-    echo $this->Stok->getData();
+    echo $this->Stok->getData($this->user);
   }
 
   public function getId()
@@ -96,7 +102,7 @@ class Stok extends CI_Controller
     $sat    = htmlspecialchars(trim(preg_replace('/[^a-zA-Z\s]/', '', $this->input->post('satuan'))));
     $rak    = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('rak'))));
 
-    $data = array(
+    $data = [
       'merk_id'     => strtolower($merk),
       'jenis_part'  => strtolower($nama),
       'sat'         => strtolower($sat),
@@ -105,11 +111,11 @@ class Stok extends CI_Controller
       'rak'         => strtolower($rak),
       'part_in'     => date('Y-m-d H:i:s'),
       'user_id'     => $this->session->userdata('id_user')
-    );
+    ];
 
-    $data = $this->Stok->addStok($data);
+    $query = $this->Stok->addStok($data);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function update()
@@ -122,7 +128,7 @@ class Stok extends CI_Controller
     $sat    = htmlspecialchars(trim(preg_replace('/[^a-zA-Z\s]/', '', $this->input->post('satuan'))));
     $rak    = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('rak'))));
 
-    $data = array(
+    $data = [
       'merk_id'     => strtolower($merk),
       'jenis_part'  => strtolower($nama),
       'sat'         => strtolower($sat),
@@ -131,15 +137,15 @@ class Stok extends CI_Controller
       'rak'         => strtolower($rak),
       'part_edit'   => date('Y-m-d H:i:s'),
       'user_id'     => $this->session->userdata('id_user')
-    );
+    ];
 
-    $where = array(
+    $where = [
       'id_part'   => $id
-    );
+    ];
 
-    $data = $this->Stok->editStok($data, $where);
+    $query = $this->Stok->editStok($data, $where);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function delete()
@@ -160,7 +166,7 @@ class Stok extends CI_Controller
     $satuan   = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('satuan'))));
     $rak      = htmlspecialchars(trim(preg_replace('/[^a-zA-Z0-9\s]/', '', $this->input->post('rak'))));
 
-    $datapart = array(
+    $datapart = [
       'jenis_part'  => strtolower($nama),
       'merk_id'     => $merk,
       'part_baru'   => $baru,
@@ -169,7 +175,7 @@ class Stok extends CI_Controller
       'rak'         => strtolower($rak),
       'part_in'     => date('Y-m-d H:i:s'),
       'user_id'     => $this->session->userdata('id_user'),
-    );
+    ];
 
     $this->Stok->addNewData($datapart);
 
@@ -190,20 +196,23 @@ class Stok extends CI_Controller
   {
     $this->load->library('pagination');
 
-    $config['base_url']     = 'http://localhost/he-bengkel/stok/riwayat/' . $id;
-
-    $config['total_rows']   = $this->Stok->getRowsHistory($id);
-    $config['per_page']     = 10;
-    $config['uri_segment']  = 4;
+    $config = [
+      'base_url'    => 'http://localhost/he-bengkel/stok/riwayat/' . $id,
+      'total_rows'  => $this->Stok->getRowsHistory($id),
+      'per_page'    => 10,
+      'uri_segment' => 4
+    ];
 
     $this->pagination->initialize($config);
 
-    $start              = $this->uri->segment(4);
-    $data['id']         = $id;
+    $start  = $this->uri->segment(4);
 
-    $data['title']      = "Riwayat Sparepart";
-    $data['stok']       = $this->Stok->getId($id);
-    $data['history']    = $this->Stok->getHistory($id, $config['per_page'], $start);
+    $data = [
+      'id'      => $id,
+      'title'   => "Riwayat Sparepart",
+      'stok'    => $this->Stok->getId($id),
+      'history' => $this->Stok->getHistory($id, $config['per_page'], $start)
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -214,9 +223,11 @@ class Stok extends CI_Controller
 
   public function print()
   {
-    $data['stok'] = $this->Stok->getStok();
+    $data = [
+      'stok' => $this->Stok->getStok()
+    ];
 
-    $content      = $this->load->view('main/stok/part/print', $data, true);
+    $content  = $this->load->view('main/stok/part/print', $data, true);
 
     $mpdf = new Mpdf();
 
