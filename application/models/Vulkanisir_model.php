@@ -20,13 +20,13 @@ class Vulkanisir_model extends CI_Model
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          <a href="http://localhost/he-bengkel/vulkanisir/suratJalanKeluar/$2" target="_blank" class="btn btn-info btn-sm btn-print" data-toggle="tooltip" title="Cetak">
+          <a href="http://localhost/he-bengkel/vulkanisir/suratJalanKeluar/$2" target="_blank" class="btn btn-info btn-sm border border-light btn-print" title="Cetak">
             <i class="fas fa-print fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-success text-white btn-detail" data-kd="$2" data-toggle="tooltip" title="Detail">
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-success text-white btn-detail" data-kd="$2" title="Detail">
             <i class="fas fa-eye fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-danger text-white btn-delete" data-kd="$2" title="Delete">
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
@@ -39,7 +39,9 @@ class Vulkanisir_model extends CI_Model
   public function addData($data_vulk, $detail_vulk, $update_ban)
   {
     $this->db->insert('vulkanisir', $data_vulk);
+
     $this->db->insert_batch('detail_vulk', $detail_vulk);
+
     $this->db->update_batch('ban', $update_ban, 'id_ban');
   }
 
@@ -68,10 +70,12 @@ class Vulkanisir_model extends CI_Model
 
   public function getAllData()
   {
-    $this->db->select('*');
-    $this->db->from('vulkanisir');
-    $this->db->join('detail_vulk', 'detail_vulk.kd_vulk = vulkanisir.kd_vulk');
+    $this->db->select('*')
+      ->from('vulkanisir')
+      ->join('detail_vulk', 'detail_vulk.kd_vulk = vulkanisir.kd_vulk');
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
@@ -108,7 +112,11 @@ class Vulkanisir_model extends CI_Model
 
   public function getDetailAllVulk()
   {
-    $this->datatables->select('a.id_detail_vulk, a.kd_vulk, a.no_seri_vulk, a.merk_vulk, a.ukuran_ban_vulk, a.jml_vulk, a.status, a.no_nota, a.tgl_update, b.tgl_vulk, c.nama_toko')
+    $this->datatables->select('
+                              a.id_detail_vulk, a.kd_vulk, a.no_seri_vulk, 
+                              a.merk_vulk, a.ukuran_ban_vulk, a.jml_vulk, a.status, 
+                              a.no_nota, a.tgl_update, b.tgl_vulk, c.nama_toko
+                              ')
       ->from('detail_vulk a')
       ->join('vulkanisir b', 'b.kd_vulk = a.kd_vulk')
       ->join('toko c', 'c.id_toko = b.tempat_vulk')
@@ -125,7 +133,11 @@ class Vulkanisir_model extends CI_Model
 
   public function getDetailAllVulkDone()
   {
-    $this->datatables->select('a.id_detail_vulk_selesai, a.no_nota, a.kd_vulk, a.no_seri, a.merk, a.ukuran, a.ongkos, b.tgl_selesai, c.nama_toko')
+    $this->datatables->select('
+                              a.id_detail_vulk_selesai, a.no_nota, a.kd_vulk, 
+                              a.no_seri, a.merk, a.ukuran, a.ongkos, 
+                              b.tgl_selesai, c.nama_toko
+                              ')
       ->from('detail_vulk_selesai a')
       ->join('vulk_done b', 'b.no_nota = a.no_nota', 'left')
       ->join('toko c', 'c.id_toko = b.tempat_vulk')
@@ -219,6 +231,7 @@ class Vulkanisir_model extends CI_Model
   {
     // Filter data berdasarkan kd_vulk dan no_seri array
     $this->db->where_in('kd_vulk', $kdvulk);
+
     $this->db->where_in('no_seri_vulk', $arr);
 
     // Ambil data yang akan diperbarui
@@ -232,10 +245,10 @@ class Vulkanisir_model extends CI_Model
       foreach ($data_to_update as $row) {
         // Gabungkan data asli dengan data yang akan diperbarui
         $update_item = [
-          'no_seri_vulk' => $row['no_seri_vulk'],
-          'status' => $updateDetailStatus['status'],
-          'no_nota' => $updateDetailStatus['no_nota'],
-          'tgl_update' => $updateDetailStatus['tgl_update']
+          'no_seri_vulk'  => $row['no_seri_vulk'],
+          'status'        => $updateDetailStatus['status'],
+          'no_nota'       => $updateDetailStatus['no_nota'],
+          'tgl_update'    => $updateDetailStatus['tgl_update']
         ];
 
         $update_data[] = $update_item;
@@ -266,17 +279,20 @@ class Vulkanisir_model extends CI_Model
   public function addSelesaiVulk($selesai, $updateban)
   {
     $this->db->insert('vulk_done', $selesai);
+
     $this->db->update_batch('ban', $updateban, 'no_seri');
   }
 
   public function getDataSuccess($kd)
   {
-    $this->db->select('*');
-    $this->db->from('vulkanisir');
-    $this->db->where('vulkanisir.kd_vulk', $kd);
-    $this->db->join('detail_vulk', 'detail_vulk.kd_vulk = vulkanisir.kd_vulk');
-    $this->db->join('toko', 'toko.id_toko = vulkanisir.tempat_vulk');
+    $this->db->select('*')
+      ->from('vulkanisir')
+      ->where('vulkanisir.kd_vulk', $kd)
+      ->join('detail_vulk', 'detail_vulk.kd_vulk = vulkanisir.kd_vulk')
+      ->join('toko', 'toko.id_toko = vulkanisir.tempat_vulk');
+
     $query = $this->db->get()->result_array();
+
     return $query;
   }
 
@@ -288,8 +304,11 @@ class Vulkanisir_model extends CI_Model
   public function delete($kd)
   {
     $this->db->delete('vulkanisir', ['kd_vulk' => $kd]);
+
     $this->db->delete('detail_vulk', ['kd_vulk' => $kd]);
+
     $this->db->delete('detail_vulk_selesai', ['kd_vulk' => $kd]);
+
     $this->db->delete('history_ban', ['kd_history_ban' => $kd]);
   }
 

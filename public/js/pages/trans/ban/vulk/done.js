@@ -144,36 +144,36 @@ $(document).ready(function () {
 
 		const newRow = `
     <tr class="cart-selesai text-center">
-      <td class="text-uppercase seri">
+      <td class="align-middle text-uppercase seri">
       ${noseri}
       <input type="hidden" name="seri_hidden[]" value="${noseri}">
       <input type="hidden" name="jmldivulk_hidden[]" value="${jmldivulk}">
       <input type="hidden" name="kdvulk_hidden[]" value="${kdvulk}">
       </td>
 
-      <td class="text-uppercase merk">
+      <td class="align-middle text-uppercase merk">
       ${merk}
       <input type="hidden" name="merk_hidden[]" value="${merk}">
       </td>
 
-			<td class="text-uppercase size">
+			<td class="align-middle text-uppercase size">
       ${size}
       <input type="hidden" name="size_hidden[]" value="${size}">
       </td>
 
-			<td class="text-uppercase jml">
+			<td class="align-middle text-uppercase jml">
       ${jml}
       <input type="hidden" name="jml_hidden[]" value="${jml}">
       </td>
 
-			<td class="text-uppercase biaya">
+			<td class="align-middle text-uppercase biaya">
       ${biaya}
       <input type="hidden" name="biaya_hidden[]" value="${biaya}">
       </td>
 
-      <td class="aksi">
+      <td class="align-middle aksi">
         <button type="button" class="btn btn-danger" id="tombol-hapus" data-seri="${noseri}" data-id="${noseri}">
-          Hapus
+          <i class="fas fa-trash"></i>
         </button>
       </td>
     </tr>

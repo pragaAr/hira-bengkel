@@ -20,12 +20,15 @@ class Vulkanisir extends CI_Controller
 
   public function index()
   {
-    $data['title']  = 'Data Vulkanisir';
+    $data = [
+      'title' => 'Data Vulkanisir'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/vulk/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getVulkanisir()
@@ -37,13 +40,16 @@ class Vulkanisir extends CI_Controller
 
   public function addData()
   {
-    $data['title']  = 'Form Tambah Data Vulkanisir';
-    $data['kd']     = $this->Vulk->cekKd();
+    $data = [
+      'title' => 'Form Tambah Data Vulkanisir',
+      'kd'    => $this->Vulk->cekKd()
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/vulk/add', $data);
+    $this->load->view('template/footer');
   }
 
   public function proses()
@@ -63,10 +69,10 @@ class Vulkanisir extends CI_Controller
     $ket      = $this->input->post('ket_hidden');
 
     $data_vulk = [
-      'kd_vulk'           => $kdvulk,
-      'tempat_vulk'       => $tokoid,
-      'jml_total_vulk'    => $total,
-      'tgl_vulk'          => $date,
+      'kd_vulk'         => $kdvulk,
+      'tempat_vulk'     => $tokoid,
+      'jml_total_vulk'  => $total,
+      'tgl_vulk'        => $date,
     ];
 
     $detail_vulk = [];
@@ -102,6 +108,7 @@ class Vulkanisir extends CI_Controller
     }
 
     $this->Vulk->addData($data_vulk, $detail_vulk, $update_ban);
+
     $this->Vulk->addHistory($historyVulk);
 
     $this->session->set_flashdata('success', 'Ban berhasil divulkanisir');
@@ -111,32 +118,35 @@ class Vulkanisir extends CI_Controller
 
   public function selesai()
   {
-    $data['title']    = 'Form Selesai Vulkanisir';
+    $data = [
+      'title' => 'Form Selesai Vulkanisir'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/vulk/selesai', $data);
+    $this->load->view('template/footer');
   }
 
   public function getDataByTempat()
   {
-    $id   = $this->input->post('tempat');
+    $id = $this->input->post('tempat');
 
-    $data = $this->Vulk->getVulkByTempat($id);
+    $query = $this->Vulk->getVulkByTempat($id);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function getDataBan()
   {
-    $kd   = $this->input->post('kd');
+    $kd = $this->input->post('kd');
 
     $seri   = $this->input->post('seri');
 
-    $data   = $this->Vulk->getBanBySeri($kd, $seri);
+    $query  = $this->Vulk->getBanBySeri($kd, $seri);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function prosesselesai()
@@ -158,7 +168,7 @@ class Vulkanisir extends CI_Controller
     $date         = date('Y-m-d H:i:s');
     $currjmlvulk  = $this->input->post('jmldivulk_hidden');
 
-    $vulkDone = array(
+    $vulkDone = [
       'no_nota'           => $nota,
       'tempat_vulk'       => $tokoid,
       'biaya'             => $biaya,
@@ -166,7 +176,7 @@ class Vulkanisir extends CI_Controller
       'jml_vulk_selesai'  => $jml,
       'tgl_selesai'       => $date,
       'user_id'           => $user,
-    );
+    ];
 
     $vulkDoneItems = [];
 
@@ -193,9 +203,9 @@ class Vulkanisir extends CI_Controller
     }
 
     $updateDetailStatus = [
-      'status' => 1,
-      'no_nota' => $nota,
-      'tgl_update' => $date
+      'status'      => 1,
+      'no_nota'     => $nota,
+      'tgl_update'  => $date
     ];
 
 
@@ -221,8 +231,11 @@ class Vulkanisir extends CI_Controller
     }
 
     $this->Vulk->addDataDone($vulkDone, $vulkDoneItems);
+
     $this->Vulk->updateDetailStatus($arrkd, $arr, $updateDetailStatus);
+
     $this->Vulk->updateStatusBan($updateStatusBan);
+
     $this->Vulk->addHistoryVulkDone($historyVulk);
 
     $this->session->set_flashdata('success', 'Vulkanisir berhasil diupdate');
@@ -232,12 +245,15 @@ class Vulkanisir extends CI_Controller
 
   public function allDetailVulk()
   {
-    $data['title']    = 'Detail Vulkanisir';
+    $data = [
+      'title' => 'Detail Vulkanisir'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/vulk/detail-all', $data);
+    $this->load->view('template/footer');
   }
 
   public function getAllDetail()
@@ -249,12 +265,15 @@ class Vulkanisir extends CI_Controller
 
   public function allDetailVulkDone()
   {
-    $data['title']    = 'Detail Vulkanisir Selesai';
+    $data = [
+      'title' => 'Detail Vulkanisir Selesai'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/vulk/detail-all-done', $data);
+    $this->load->view('template/footer');
   }
 
   public function getAllDetailDone()
@@ -270,51 +289,37 @@ class Vulkanisir extends CI_Controller
     $head   = $this->Vulk->getVulkKd($kd);
     $detail = $this->Vulk->getDetailByKd($kd);
 
-    $response = array(
+    $response = [
       'kdvulk'  => strtoupper($head->kd_vulk),
       'tglvulk' => date('d/m/Y', strtotime($head->tgl_vulk)),
       'tempat'  => strtoupper($head->nama_toko),
       'detail'  => $detail
-    );
+    ];
 
     echo json_encode($response);
   }
 
   public function getNota()
   {
-    $keyword = $this->input->get('q');
+    $key  = $this->input->get('q');
 
-    if (!$keyword) {
+    $data = !$key ? $this->Vulk->selectNota() : $this->Vulk->selectSearcNota($key);
 
-      $data = $this->Vulk->selectNota();
+    $response = [];
 
-      $response = [];
-      foreach ($data as $nota) {
-        $response[] = [
-          'id' => $nota->id_vulk_done,
-          'text' => strtoupper($nota->no_nota),
-        ];
-      }
-
-      echo json_encode($response);
-    } else {
-      $data = $this->Vulk->selectSearcNota($keyword);
-
-      $response = [];
-      foreach ($data as $nota) {
-        $response[] = [
-          'id' => $nota->id_vulk_done,
-          'text' => strtoupper($nota->no_nota),
-        ];
-      }
-
-      echo json_encode($response);
+    foreach ($data as $nota) {
+      $response[] = [
+        'id'    => $nota->id_vulk_done,
+        'text'  => strtoupper($nota->no_nota),
+      ];
     }
+
+    echo json_encode($response);
   }
 
   public function printDo()
   {
-    $nota     = $this->input->post('nota');
+    $nota = $this->input->post('nota');
 
     $data = [
       'head'    => $this->Vulk->getKdByNota($nota),
@@ -324,8 +329,8 @@ class Vulkanisir extends CI_Controller
     $content  = $this->load->view('trans/ban/vulk/print-selesai', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 
@@ -339,15 +344,18 @@ class Vulkanisir extends CI_Controller
 
   public function suratJalanKeluar($kd)
   {
-    $data['head']     = $this->Vulk->getVulkKd($kd);
-    $data['dtvulk']   = $this->Vulk->getDataSuratJalan($kd);
-
     $do = strtoupper($kd);
+
+    $data = [
+      'head'    => $this->Vulk->getVulkKd($kd),
+      'dtvulk'  => $this->Vulk->getDataSuratJalan($kd)
+    ];
+
     $content  = $this->load->view('trans/ban/vulk/print-sj', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 
@@ -360,22 +368,23 @@ class Vulkanisir extends CI_Controller
 
   public function delete()
   {
-    $kd   = $this->input->post('kd');
+    $kd = $this->input->post('kd');
 
     $seri = $this->Vulk->getBanVulkSeri($kd);
 
     $updateban = [];
 
     foreach ($seri as $res) {
-      $updateban[] = array(
+      $updateban[] = [
         'no_seri'    => $res['no_seri_vulk'],
         'status_ban' => "Gudang",
-      );
+      ];
     }
 
     $this->Vulk->delete($kd);
-    $data = $this->Vulk->updateStatus($updateban);
 
-    echo json_encode($data);
+    $query = $this->Vulk->updateStatus($updateban);
+
+    echo json_encode($query);
   }
 }

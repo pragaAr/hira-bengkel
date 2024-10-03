@@ -159,6 +159,30 @@
 
   <script src="<?= base_url('public/') ?>js/pages/trans/ban/oper/pakai-oper.js"></script>
 
+<?php } elseif ($this->uri->segment(1) == 'retur_ban') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/retur/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'vulkanisir' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/vulk/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'vulkanisir' && $this->uri->segment(2) == 'allDetailVulk') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/vulk/all.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'vulkanisir' && $this->uri->segment(2) == 'allDetailVulkDone') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/vulk/all-done.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'vulkanisir' && $this->uri->segment(2) == 'selesai') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/vulk/done.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'vulkanisir' && $this->uri->segment(2) == 'addData') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/vulk/add.js"></script>
+
 <?php } ?>
 
 </body>

@@ -18,12 +18,15 @@ class Retur_ban extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Retur Ban';
+    $data = [
+      'title' => 'Data Retur Ban'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/retur/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getRetur()
