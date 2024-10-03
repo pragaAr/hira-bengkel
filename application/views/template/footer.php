@@ -37,6 +37,8 @@
 
 <script src="<?= base_url('public/') ?>js/pages/main/format.js"></script>
 
+<script src="<?= base_url('public/') ?>js/pages/notify-swal.js"></script>
+
 <?php if ($this->session->userdata('user_role') == 'admin') { ?>
   <?php if ($this->uri->segment(1) == 'user') { ?>
 
@@ -66,8 +68,6 @@
   <script src="<?= base_url('public/') ?>js/pages/main/stok/ban/ban.js"></script>
 
 <?php } elseif ($this->uri->segment(1) == 'percab' && $this->uri->segment(2) == '') { ?>
-
-  <script src="<?= base_url('public/') ?>js/pages/notify-swal.js"></script>
 
   <script src="<?= base_url('public/') ?>js/pages/trans/percab/index.js"></script>
 
@@ -106,6 +106,58 @@
 <?php } elseif ($this->uri->segment(1) == 'oper' && $this->uri->segment(2) == '') { ?>
 
   <script src="<?= base_url('public/') ?>js/pages/trans/part/oper/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'oper' && $this->uri->segment(2) == 'allDataPakai') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/part/oper/pakai-all.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'retur' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/part/retur/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'repair' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/part/repair/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'repair' && $this->uri->segment(2) == 'add') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/part/repair/add.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'beli_ban' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/beli/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'beli_ban' && $this->uri->segment(2) == 'add') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/beli/add.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'beli_ban' && $this->uri->segment(2) == 'detailAll') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/beli/all.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'movement' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/move.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'pakai_ban' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/pakai/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'pakai_ban' && $this->uri->segment(2) == 'addData') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/pakai/add.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'pakai_ban' && $this->uri->segment(2) == 'detailAll') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/pakai/all.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'oper_ban' && $this->uri->segment(2) == '') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/oper/index.js"></script>
+
+<?php } elseif ($this->uri->segment(1) == 'oper_ban' && $this->uri->segment(2) == 'allDataPakai') { ?>
+
+  <script src="<?= base_url('public/') ?>js/pages/trans/ban/oper/pakai-oper.js"></script>
 
 <?php } ?>
 

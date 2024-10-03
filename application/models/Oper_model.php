@@ -76,13 +76,13 @@ class Oper_model extends CI_Model
   public function getOper()
   {
     $this->db->select('
-    b.plat_no_truck truck_asal_id, b.merk_truck merk_truck_asal, b.jenis_truck jenis_truck_asal, 
-    c.plat_no_truck truck_oper_id, c.merk_truck merk_truck_oper, c.jenis_truck jenis_truck_oper, 
-    a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, 
-    a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, 
-    d.jenis_part part_id, d.sat sat_oper, 
-    e.nama_merk merk_id, 
-    f.id_user user_id')
+                      a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, 
+                      a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, 
+                      b.plat_no_truck truck_asal_id, b.merk_truck merk_truck_asal, b.jenis_truck jenis_truck_asal, 
+                      c.plat_no_truck truck_oper_id, c.merk_truck merk_truck_oper, c.jenis_truck jenis_truck_oper, 
+                      d.jenis_part part_id, d.sat sat_oper, 
+                      e.nama_merk merk_id, f.id_user user_id
+                      ')
       ->from('oper_part a')
       ->join('truck b', 'b.id_truck = a.truck_asal_id')
       ->join('truck c', 'c.id_truck = a.truck_oper_id')
@@ -98,12 +98,19 @@ class Oper_model extends CI_Model
 
   public function getOperkd($kd)
   {
-    $this->db->select('a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, b.id_truck asalid, b.plat_no_truck asal, b.merk_truck merkasal, d.jenis_part part, d.id_part, d.sat, e.id_merk, e.nama_merk merk')
+    $this->db->select('
+                      a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, 
+                      a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, 
+                      a.tgl_oper, a.tgl_kembali_oper, 
+                      b.id_truck asalid, b.plat_no_truck asal, b.merk_truck merkasal, 
+                      c.jenis_part part, c.id_part, c.sat, 
+                      d.id_merk, d.nama_merk merk
+                      ')
       ->from('oper_part a')
       ->where('a.kd_oper', $kd)
       ->join('truck b', 'b.id_truck = a.truck_oper_id')
-      ->join('stok_part d', 'd.id_part = a.part_id', 'left')
-      ->join('merk e', 'e.id_merk = a.merk_id', 'left');
+      ->join('stok_part c', 'c.id_part = a.part_id', 'left')
+      ->join('merk d', 'd.id_merk = a.merk_id', 'left');
 
     $query = $this->db->get()->row();
 
@@ -112,7 +119,15 @@ class Oper_model extends CI_Model
 
   public function getDetailOperKd($kd)
   {
-    $this->db->select('a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, b.id_truck asalid, b.plat_no_truck asal, b.merk_truck merkasal, c.id_truck tujuanid, c.plat_no_truck tujuan, c.merk_truck merktujuan, d.jenis_part part, d.id_part, d.sat, e.id_merk, e.nama_merk merk, f.nama_user')
+    $this->db->select('
+                      a.id_oper, a.kd_oper, a.kd_pakai, a.detail_pakai_id, 
+                      a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, 
+                      a.tgl_oper, a.tgl_kembali_oper, 
+                      b.id_truck asalid, b.plat_no_truck asal, b.merk_truck merkasal, 
+                      c.id_truck tujuanid, c.plat_no_truck tujuan, c.merk_truck merktujuan, 
+                      d.jenis_part part, d.id_part, d.sat, 
+                      e.id_merk, e.nama_merk merk, f.nama_user
+                      ')
       ->from('oper_part a')
       ->where('a.kd_oper', $kd)
       ->join('truck b', 'b.id_truck = a.truck_asal_id')
@@ -151,63 +166,88 @@ class Oper_model extends CI_Model
 
   public function getFilter($awal, $akhir)
   {
-    $this->db->select('t1.plat_no_truck truck_asal_id, t1.merk_truck merk_truck_asal, t1.jenis_truck jenis_truck_asal, t2.plat_no_truck truck_oper_id, t2.merk_truck merk_truck_oper, t2.jenis_truck jenis_truck_oper, id_oper, kd_oper, d1.kd_pakai, detail_pakai_id, p1.jenis_part part_id, p1.sat sat_oper, m1.nama_merk merk_id, jml_oper, nama_montir_oper, ket_oper, status_oper, tgl_oper, tgl_kembali_oper, u1.id_user user_id');
-    $this->db->from('oper_part');
-    $this->db->where('date(oper_part.tgl_oper) >=', $awal);
-    $this->db->where('date(oper_part.tgl_oper) <=', $akhir);
-    $this->db->join('truck t1', 't1.id_truck=oper_part.truck_asal_id');
-    $this->db->join('truck t2', 't2.id_truck=oper_part.truck_oper_id');
-    $this->db->join('stok_part p1', 'p1.id_part = oper_part.part_id', 'left');
-    $this->db->join('merk m1', 'm1.id_merk = oper_part.merk_id', 'left');
-    $this->db->join('user u1', 'u1.id_user = oper_part.user_id', 'left');
-    $this->db->join('detail_pakai d1', 'd1.id_detail_pakai = oper_part.detail_pakai_id', 'left');
+    $this->db->select('
+                      b.plat_no_truck truck_asal_id, b.merk_truck merk_truck_asal, b.jenis_truck jenis_truck_asal, 
+                      c.plat_no_truck truck_oper_id, c.merk_truck merk_truck_oper, c.jenis_truck jenis_truck_oper, 
+                      a.id_oper, a.kd_oper, g.kd_pakai, a.detail_pakai_id, 
+                      d.jenis_part part_id, d.sat sat_oper, 
+                      e.nama_merk merk_id, a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, 
+                      f.id_user user_id
+                      ')
+      ->from('oper_part a')
+      ->where('date(a.tgl_oper) >=', $awal)
+      ->where('date(a.tgl_oper) <=', $akhir)
+      ->join('truck b', 'b.id_truck=a.truck_asal_id')
+      ->join('truck c', 'c.id_truck=a.truck_oper_id')
+      ->join('stok_part d', 'd.id_part = a.part_id', 'left')
+      ->join('merk e', 'e.id_merk = a.merk_id', 'left')
+      ->join('user f', 'f.id_user = a.user_id', 'left')
+      ->join('detail_pakai g', 'g.id_detail_pakai = a.detail_pakai_id', 'left');
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
   public function getFilterTruckDate($id, $tgl)
   {
-    $this->db->select('t1.plat_no_truck truck_asal_id, t1.merk_truck merk_truck_asal, t1.jenis_truck jenis_truck_asal, t2.plat_no_truck truck_oper_id, t2.merk_truck merk_truck_oper, t2.jenis_truck jenis_truck_oper, id_oper, kd_oper, d1.kd_pakai, detail_pakai_id, p1.jenis_part part_id, p1.sat sat_oper, m1.nama_merk merk_id, jml_oper, nama_montir_oper, ket_oper, status_oper, tgl_oper, tgl_kembali_oper, u1.id_user user_id');
-    $this->db->from('oper_part');
-    $this->db->where('date(oper_part.tgl_oper) >=', $tgl);
-    $this->db->where('oper_part.truck_asal_id=', $id);
-    $this->db->join('truck t1', 't1.id_truck=oper_part.truck_asal_id');
-    $this->db->join('truck t2', 't2.id_truck=oper_part.truck_oper_id');
-    $this->db->join('stok_part p1', 'p1.id_part = oper_part.part_id', 'left');
-    $this->db->join('merk m1', 'm1.id_merk = oper_part.merk_id', 'left');
-    $this->db->join('user u1', 'u1.id_user = oper_part.user_id', 'left');
-    $this->db->join('detail_pakai d1', 'd1.id_detail_pakai = oper_part.detail_pakai_id', 'left');
+    $this->db->select('
+                      b.plat_no_truck truck_asal_id, b.merk_truck merk_truck_asal, b.jenis_truck jenis_truck_asal, 
+                      c.plat_no_truck truck_oper_id, c.merk_truck merk_truck_oper, c.jenis_truck jenis_truck_oper, 
+                      a.id_oper, a.kd_oper, a.jml_oper, a.nama_montir_oper, a.ket_oper, a.status_oper, a.tgl_oper, a.tgl_kembali_oper, 
+                      g.kd_pakai, 
+                      a.detail_pakai_id, d.jenis_part part_id, 
+                      d.sat sat_oper, 
+                      e.nama_merk merk_id, 
+                      f.id_user user_id')
+      ->from('oper_part a')
+      ->where('date(a.tgl_oper) >=', $tgl)
+      ->where('a.truck_asal_id', $id)
+      ->join('truck b', 'b.id_truck = a.truck_asal_id')
+      ->join('truck c', 'c.id_truck = a.truck_oper_id')
+      ->join('stok_part d', 'd.id_part = a.part_id', 'left')
+      ->join('merk e', 'e.id_merk = a.merk_id', 'left')
+      ->join('user f', 'f.id_user = a.user_id', 'left')
+      ->join('detail_pakai g', 'g.id_detail_pakai = a.detail_pakai_id', 'left');
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
   public function getFilterTruck($platno)
   {
-    $this->db->select('*');
-    $this->db->from('oper_part');
-    $this->db->join('stok_part', 'stok_part.id_part = oper_part.part_id', 'left');
-    $this->db->join('merk', 'merk.id_merk = oper_part.merk_id', 'left');
-    $this->db->join('truck', 'truck.id_truck = oper_part.truck_asal_id', 'left');
-    $this->db->where('plat_no_truck =', $platno);
+    $this->db->select('*')
+      ->from('oper_part')
+      ->join('stok_part', 'stok_part.id_part = oper_part.part_id', 'left')
+      ->join('merk', 'merk.id_merk = oper_part.merk_id', 'left')
+      ->join('truck', 'truck.id_truck = oper_part.truck_asal_id', 'left')
+      ->where('plat_no_truck =', $platno);
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
   public function getTruck()
   {
-    $this->db->select('*');
-    $this->db->from('oper_part');
-    $this->db->join('truck', 'truck.id_truck = oper_part.truck_oper_id', 'left');
+    $this->db->select('*')
+      ->from('oper_part')
+      ->join('truck', 'truck.id_truck = oper_part.truck_oper_id', 'left');
+
     $query = $this->db->get();
+
     return $query->row_array();
   }
 
   public function getTruckId($id)
   {
-    $this->db->select('plat_no_truck');
-    $this->db->from('truck');
-    $this->db->where(['truck.id_truck' => $id]);
+    $this->db->select('plat_no_truck')
+      ->from('truck')
+      ->where(['truck.id_truck' => $id]);
+
     $query = $this->db->get();
+
     return $query->row_array();
   }
 

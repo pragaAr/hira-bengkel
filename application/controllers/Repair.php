@@ -22,12 +22,15 @@ class Repair extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Repair Sparepart';
+    $data = [
+      'title' => 'Data Repair Sparepart'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/repair/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getRepair()
@@ -39,13 +42,16 @@ class Repair extends CI_Controller
 
   public function add()
   {
-    $data['title']  = 'Form Tambah Data Repair';
-    $data['kd']     = $this->Repair->cekKdRepair();
+    $data = [
+      'title' => 'Form Tambah Data Repair',
+      'kd'    => $this->Repair->cekKdRepair()
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/repair/add', $data);
+    $this->load->view('template/footer');
   }
 
   public function cart()
@@ -73,11 +79,11 @@ class Repair extends CI_Controller
     $date       = date('Y-m-d H:i:s');
 
     $datarepair = [
-      'kd_repair'       => $kd,
-      'toko_id'         => $tokoid,
-      'total_repair'    => $total,
-      'tgl_repair'      => $date,
-      'user_id'         => $user,
+      'kd_repair'     => $kd,
+      'toko_id'       => $tokoid,
+      'total_repair'  => $total,
+      'tgl_repair'    => $date,
+      'user_id'       => $user,
     ];
 
     $detailrepair = [];
@@ -113,9 +119,11 @@ class Repair extends CI_Controller
 
   public function detail($kd)
   {
-    $data['title']  = 'Detail Repair';
-    $data['rep']    = $this->Repair->getRepairKd($kd);
-    $data['detail'] = $this->Repair->getDetailRepair($kd);
+    $data = [
+      'title'   => 'Detail Repair',
+      'rep'     => $this->Repair->getRepairKd($kd),
+      'detail'  => $this->Repair->getDetailRepair($kd)
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -126,18 +134,21 @@ class Repair extends CI_Controller
 
   public function print($kd)
   {
-    $dt       = $this->Repair->getSuratJalan($kd);
-    $header   = $this->Repair->getHeaderRepair($kd);
+    $dt     = $this->Repair->getSuratJalan($kd);
+    $header = $this->Repair->getHeaderRepair($kd);
+    $do     = strtoupper($kd);
 
-    $data['kd']       = $kd;
-    $data['dtrep']    = $dt;
-    $data['header']   = $header;
-    $do = strtoupper($kd);
+    $data = [
+      'kd'      => $kd,
+      'dtrep'   => $dt,
+      'header'  => $header,
+    ];
+
     $content  = $this->load->view('trans/part/repair/print', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 

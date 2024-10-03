@@ -18,12 +18,15 @@ class Retur extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Retur';
+    $data = [
+      'title' => 'Data Retur'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/part/retur/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getRetur()

@@ -151,7 +151,7 @@ $("#operTables").on("click", ".btn-kembali", function () {
 
 	Swal.fire({
 		title: "Anda yakin ?",
-		text: "Data akan dikembalikan !!",
+		text: "Sparepart akan dikembalikan !!",
 		icon: "warning",
 		showCancelButton: true,
 		confirmButtonColor: "#3085d6",

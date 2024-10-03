@@ -56,7 +56,7 @@
         </button>
       </div>
       <div class="modal-body" style="font-size:13px;">
-        <p class="font-weight-bold" id="subtitle"></p>
+        <p class="font-weight-bold text-dark" id="subtitle"></p>
         <small class="font-weight-bold text-danger">--Jumlah yang dioper tidak bisa melebihi jumlah yang dipakai</small>
         <hr>
         <form id="form_operLagi">
@@ -69,12 +69,12 @@
               <input type="hidden" class="form-control" id="asalid" name="asalid" readonly>
               <input type="hidden" class="form-control" id="partid" name="partid" readonly>
               <input type="hidden" class="form-control" id="sat" name="sat" readonly>
-              <input type="text" class="form-control" id="part" name="part" readonly>
+              <input type="text" class="form-control text-uppercase" id="part" name="part" readonly>
             </div>
             <div class="form-group col-lg-4 col-md-4">
               <label class="font-weight-bold text-dark" for="merk">Merk</label>
               <input type="text" class="form-control" id="merk" name="merk" readonly>
-              <input type="hidden" class="form-control" id="merkid" name="merkid" readonly>
+              <input type="hidden" class="form-control text-uppercase" id="merkid" name="merkid" readonly>
             </div>
             <div class="form-group col-lg-4 col-md-4">
               <label class="font-weight-bold text-dark" for="jml">Jumlah Pakai</label>
@@ -98,14 +98,14 @@
           <div class="form-row">
             <div class="form-group col-lg-6 col-md-6">
               <label class="font-weight-bold text-dark" for="montir">Montir</label>
-              <input type="text" class="form-control text-capitalize" id="montir" name="montir" required>
+              <input type="text" class="form-control text-uppercase" id="montir" name="montir" required>
             </div>
             <div class="form-group col-lg-6 col-md-6">
               <label class="font-weight-bold text-dark" for="ket">Keterangan</label>
-              <input type="text" class="form-control text-capitalize" id="ket" name="ket" required>
+              <input type="text" class="form-control text-uppercase" id="ket" name="ket" required>
             </div>
             <div class="form-group col-md-12">
-              <button type="submit" class="btn btn-primary" style="border:1px solid white">Oper Lagi</button>
+              <button type="submit" class="btn btn-primary btn-block">Oper Lagi</button>
             </div>
           </div>
 

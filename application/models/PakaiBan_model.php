@@ -16,16 +16,20 @@ class PakaiBan_model extends CI_Model
 
   public function getData()
   {
-    $this->datatables->select('a.id_pakai_ban, a.kd_pakai_ban, a.truck_ban_id, a.nama_montir_ban, a.total_pakai_ban, a.tgl_pakai_ban, b.id_truck, b.plat_no_truck, b.merk_truck, b.jenis_truck')
+    $this->datatables->select('
+                              a.id_pakai_ban, a.kd_pakai_ban, a.truck_ban_id, 
+                              a.nama_montir_ban, a.total_pakai_ban, a.tgl_pakai_ban, 
+                              b.id_truck, b.plat_no_truck, b.merk_truck, b.jenis_truck
+                              ')
       ->from('pakai_ban a')
       ->join('truck b', 'b.id_truck = a.truck_ban_id', 'left')
       ->add_column(
         'view',
         '<div class="btn-group" role="group">
-          <a href="http://localhost/he-bengkel/pakai_ban/detail/$2" class="btn btn-sm btn-success text-white" data-toggle="tooltip" title="Detail">
+          <a href="http://localhost/he-bengkel/pakai_ban/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
             <i class="fas fa-eye fa-sm"></i>
           </a>
-          <a href="javascript:void(0);" class="btn btn-sm btn-danger text-white btn-delete" data-kd="$2" data-toggle="tooltip" title="Delete">
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-danger text-white btn-delete" data-kd="$2" title="Delete">
             <i class="fas fa-trash fa-sm"></i>
         </a>
         </div>',
@@ -37,7 +41,12 @@ class PakaiBan_model extends CI_Model
 
   public function getAllPakai()
   {
-    $this->datatables->select('a.id_detail_pakai_ban, a.kd_pakai_ban, a.status_ban_pakai, a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, b.no_seri, b.ukuran_ban, c.nama_merk, d.tgl_pakai_ban, e.plat_no_truck as truck')
+    $this->datatables->select('
+                              a.id_detail_pakai_ban, a.kd_pakai_ban, 
+                              a.status_ban_pakai, a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, 
+                              b.no_seri, b.ukuran_ban, c.nama_merk, 
+                              d.tgl_pakai_ban, e.plat_no_truck as truck
+                              ')
       ->from('detail_pakai_ban a')
       ->join('ban b', 'b.id_ban = a.ban_id', 'left')
       ->join('merk c', 'c.id_merk = a.merk_ban_id', 'left')
@@ -45,19 +54,23 @@ class PakaiBan_model extends CI_Model
       ->join('truck e', 'e.id_truck = d.truck_ban_id', 'left')
       ->where('a.status_pakai_ban !=', 'Di kembalikan ke gudang')
 
-      // --for searching needed
       ->add_column(
         'view',
         'id_detail_pakai_ban, kd_pakai_ban, truck, jml_pakai_ban, no_seri, ukuran_ban, status_pakai_ban, nama_merk, ket_pakai_ban, tgl_pakai_ban, status_ban_pakai'
       );
-    // --for searching needed
 
     return $this->datatables->generate();
   }
 
   public function getDetailAllPakai($id)
   {
-    $this->db->select('a.id_detail_pakai_ban, a.kd_pakai_ban, a.status_ban_pakai, a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, b.id_ban, b.no_seri, c.id_merk, c.nama_merk, d.total_pakai_ban, d.tgl_pakai_ban, e.id_truck, e.plat_no_truck as truck')
+    $this->db->select('
+                      a.id_detail_pakai_ban, a.kd_pakai_ban, a.status_ban_pakai, 
+                      a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, 
+                      b.id_ban, b.no_seri, 
+                      c.id_merk, c.nama_merk, d.total_pakai_ban, d.tgl_pakai_ban, 
+                      e.id_truck, e.plat_no_truck as truck
+                      ')
       ->from('detail_pakai_ban a')
       ->join('ban b', 'b.id_ban = a.ban_id', 'left')
       ->join('merk c', 'c.id_merk = a.merk_ban_id', 'left')
@@ -75,7 +88,12 @@ class PakaiBan_model extends CI_Model
     $y = date('Y', strtotime($bulan));
     $m = date('m', strtotime($bulan));
 
-    $this->db->select('a.id_detail_pakai_ban , a.kd_pakai_ban, a.status_ban_pakai, a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, b.no_seri, b.ukuran_ban, c.nama_merk, d.tgl_pakai_ban, e.plat_no_truck as truck')
+    $this->db->select('
+                      a.id_detail_pakai_ban , a.kd_pakai_ban, a.status_ban_pakai, 
+                      a.jml_pakai_ban, a.status_pakai_ban, a.ket_pakai_ban, 
+                      b.no_seri, b.ukuran_ban, c.nama_merk, 
+                      d.tgl_pakai_ban, e.plat_no_truck as truck
+                      ')
       ->from('detail_pakai_ban a')
       ->join('ban b', 'b.id_ban = a.ban_id', 'left')
       ->join('merk c', 'c.id_merk = a.merk_ban_id', 'left')
@@ -84,51 +102,63 @@ class PakaiBan_model extends CI_Model
       ->where('YEAR(d.tgl_pakai_ban) =', $y)
       ->where('MONTH(d.tgl_pakai_ban) =', $m);
 
-      if($truck){
-        $this->db->where('d.truck_ban_id', $truck);
-      }
+    if ($truck) {
+      $this->db->where('d.truck_ban_id', $truck);
+    }
 
     $query = $this->db->get()->result();
+
     return $query;
   }
 
   public function getFilter($awal, $akhir)
   {
-    $this->db->select('*');
-    $this->db->from('pakai_ban');
-    $this->db->where('date(pakai_ban.tgl_pakai_ban) >=', $awal);
-    $this->db->where('date(pakai_ban.tgl_pakai_ban) <=', $akhir);
-    $this->db->join('truck', 'truck.id_truck = pakai_ban.truck_ban_id');
+    $this->db->select('*')
+      ->from('pakai_ban')
+      ->where('date(pakai_ban.tgl_pakai_ban) >=', $awal)
+      ->where('date(pakai_ban.tgl_pakai_ban) <=', $akhir)
+      ->join('truck', 'truck.id_truck = pakai_ban.truck_ban_id');
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
   public function getFilterTruck($platno, $dari, $sampai)
   {
-    $this->db->select('*');
-    $this->db->from('pakai_ban');
-    $this->db->where('date(pakai_ban.tgl_pakai_ban) >=', $dari);
-    $this->db->where('date(pakai_ban.tgl_pakai_ban) <=', $sampai);
-    $this->db->join('truck', 'truck.id_truck = pakai_ban.truck_ban_id');
-    $this->db->where('plat_no_truck', $platno);
+    $this->db->select('*')
+      ->from('pakai_ban')
+      ->where('date(pakai_ban.tgl_pakai_ban) >=', $dari)
+      ->where('date(pakai_ban.tgl_pakai_ban) <=', $sampai)
+      ->join('truck', 'truck.id_truck = pakai_ban.truck_ban_id')
+      ->where('plat_no_truck', $platno);
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
   public function getFilterTruckDate($platno, $tglpakai)
   {
-    $this->db->select('*');
-    $this->db->from('pakai_ban');
-    $this->db->where('date(pakai_ban.tgl_pakai_ban) =', $tglpakai);
-    $this->db->join('truck', 'truck.id_truck = pakai_ban.truck_ban_id');
-    $this->db->where('plat_no_truck', $platno);
+    $this->db->select('*')
+      ->from('pakai_ban')
+      ->where('date(pakai_ban.tgl_pakai_ban) =', $tglpakai)
+      ->join('truck', 'truck.id_truck = pakai_ban.truck_ban_id')
+      ->where('plat_no_truck', $platno);
+
     $query = $this->db->get();
+
     return $query->result_array();
   }
 
   public function getKdPakai($kd)
   {
-    $this->db->select('a.id_pakai_ban, a.kd_pakai_ban, a.truck_ban_id, a.nama_montir_ban, a.total_pakai_ban, a.tgl_pakai_ban, a.user_id, b.id_truck, b.plat_no_truck, b.merk_truck, b.jenis_truck, c.id_user, c.username')
+    $this->db->select('
+                      a.id_pakai_ban, a.kd_pakai_ban, a.truck_ban_id, 
+                      a.nama_montir_ban, a.total_pakai_ban, a.tgl_pakai_ban, a.user_id, 
+                      b.id_truck, b.plat_no_truck, b.merk_truck, b.jenis_truck, 
+                      c.id_user, c.username
+                      ')
       ->from('pakai_ban a')
       ->join('truck b', 'b.id_truck = a.truck_ban_id')
       ->join('user c', 'c.id_user = a.user_id', 'left')
@@ -141,7 +171,12 @@ class PakaiBan_model extends CI_Model
 
   public function getDetailPakai($kd)
   {
-    $this->db->select('a.id_detail_pakai_ban, a.ban_id, a.merk_ban_id, a.status_pakai_ban, a.status_ban_pakai, a.ket_pakai_ban, a.jml_pakai_ban, b.id_ban, b.no_seri, b.ukuran_ban, b.merk_ban_id, c.id_merk, c.nama_merk')
+    $this->db->select('
+                      a.id_detail_pakai_ban, a.ban_id, a.merk_ban_id, 
+                      a.status_pakai_ban, a.status_ban_pakai, a.ket_pakai_ban, a.jml_pakai_ban, 
+                      b.id_ban, b.no_seri, b.ukuran_ban, b.merk_ban_id, 
+                      c.id_merk, c.nama_merk
+                      ')
       ->from('detail_pakai_ban a')
       ->join('ban b', 'b.id_ban = a.ban_id', 'left')
       ->join('merk c', 'c.id_merk = a.merk_ban_id', 'left')
@@ -165,13 +200,15 @@ class PakaiBan_model extends CI_Model
 
   public function getIdDetailPakai($id)
   {
-    $this->db->select('*');
-    $this->db->from('detail_pakai_ban');
-    $this->db->join('ban', 'ban.id_ban = detail_pakai_ban.ban_id', 'left');
-    $this->db->join('merk', 'merk.id_merk = detail_pakai_ban.merk_ban_id', 'left');
-    $this->db->join('pakai_ban', 'pakai_ban.kd_pakai_ban = detail_pakai_ban.kd_pakai_ban');
-    $this->db->where(['detail_pakai_ban.id_detail_pakai_ban' => $id]);
+    $this->db->select('*')
+      ->from('detail_pakai_ban')
+      ->join('ban', 'ban.id_ban = detail_pakai_ban.ban_id', 'left')
+      ->join('merk', 'merk.id_merk = detail_pakai_ban.merk_ban_id', 'left')
+      ->join('pakai_ban', 'pakai_ban.kd_pakai_ban = detail_pakai_ban.kd_pakai_ban')
+      ->where(['detail_pakai_ban.id_detail_pakai_ban' => $id]);
+
     $query = $this->db->get();
+
     return $query->row();
   }
 
@@ -199,12 +236,14 @@ class PakaiBan_model extends CI_Model
 
   public function getPakaiKembali($id)
   {
-    $this->db->select('*');
-    $this->db->from('detail_pakai_ban');
-    $this->db->join('ban', 'ban.id_ban = detail_pakai_ban.ban_id');
-    $this->db->join('pakai_ban', 'pakai_ban.kd_pakai_ban = detail_pakai_ban.kd_pakai_ban');
-    $this->db->where('id_detail_pakai_ban', $id);
+    $this->db->select('*')
+      ->from('detail_pakai_ban')
+      ->join('ban', 'ban.id_ban = detail_pakai_ban.ban_id')
+      ->join('pakai_ban', 'pakai_ban.kd_pakai_ban = detail_pakai_ban.kd_pakai_ban')
+      ->where('id_detail_pakai_ban', $id);
+
     $query = $this->db->get()->row();
+
     return $query;
   }
 
@@ -230,14 +269,18 @@ class PakaiBan_model extends CI_Model
   public function kembaliGudang($databan, $whereban, $datahistori, $datapakai, $wherepakai)
   {
     $this->db->update('ban', $databan, $whereban);
+
     $this->db->update('detail_pakai_ban', $datapakai, $wherepakai);
+
     $this->db->insert('history_ban', $datahistori);
   }
 
   public function delete($kd)
   {
     $this->db->delete('pakai_ban', ['kd_pakai_ban' => $kd]);
+
     $this->db->delete('detail_pakai_ban', ['kd_pakai_ban' => $kd]);
+
     $this->db->delete('history_ban', ['kd_history_ban' => $kd]);
   }
 

@@ -18,12 +18,15 @@ class Movement extends CI_Controller
 
   public function index()
   {
-    $data['title']      = 'Data Perpindahan Ban';
+    $data = [
+      'title' => 'Data Perpindahan Ban'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/move', $data);
+    $this->load->view('template/footer');
   }
 
   public function getMovement()

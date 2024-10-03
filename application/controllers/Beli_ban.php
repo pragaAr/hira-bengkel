@@ -24,12 +24,15 @@ class Beli_ban extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Ban Masuk';
+    $data = [
+      'title' => 'Data Ban Masuk'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/beli/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getBeli()
@@ -41,22 +44,25 @@ class Beli_ban extends CI_Controller
 
   public function add()
   {
-    $data['title']  = 'Form Tambah Data Ban Masuk';
-    $data['kd']     = $this->Beliban->cekDo();
+    $data = [
+      'title' => 'Tambah Data Ban Masuk',
+      'kd'    => $this->Beliban->cekDo()
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/beli/add', $data);
+    $this->load->view('template/footer');
   }
 
   public function getSeri()
   {
     $seri = $this->input->post('noseri');
 
-    $data = $this->Beliban->checkSeri($seri);
+    $query = $this->Beliban->checkSeri($seri);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function proses()
@@ -149,12 +155,14 @@ class Beli_ban extends CI_Controller
 
   public function detail($kd)
   {
-    $data['title']    = 'Detail Pembelian Ban';
-    $data['kdbeli']   = $this->Beliban->getKdBeliBan($kd);
-    $data['total']    = $this->Beliban->getTotalBayar($kd);
-    $data['detail']   = $this->Beliban->getDetailBeliBan($kd);
-    $data['sumtotal'] = $this->Beliban->getSumId($kd);
-    $data['retur']    = $this->Returban->getBanMasukRetur($kd);
+    $data = [
+      'title'     => 'Detail Data Ban Masuk',
+      'kdbeli'    => $this->Beliban->getKdBeliBan($kd),
+      'total'     => $this->Beliban->getTotalBayar($kd),
+      'detail'    => $this->Beliban->getDetailBeliBan($kd),
+      'sumtotal'  => $this->Beliban->getSumId($kd),
+      'retur'     => $this->Returban->getBanMasukRetur($kd),
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -165,12 +173,15 @@ class Beli_ban extends CI_Controller
 
   public function detailAll()
   {
-    $data['title']  = 'Detail Data Ban Masuk';
+    $data = [
+      'title' => 'Detail Data Ban Masuk'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/beli/detail-all', $data);
+    $this->load->view('template/footer');
   }
 
   public function getDetailAll()
@@ -184,33 +195,32 @@ class Beli_ban extends CI_Controller
   {
     $id = $this->input->post('id');
 
-    $data = $this->Beliban->getDetailById($id);
+    $query = $this->Beliban->getDetailById($id);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
-
 
   public function pelunasan()
   {
     $kd = $this->input->post('kd');
 
-    $status = array(
+    $status = [
       'status_bayar_ban'  => 'Lunas',
       'tgl_pelunasan_ban' => date('Y-m-d H:i:s')
-    );
+    ];
 
-    $where = array(
-      'kd_beli_ban'   => $kd,
-    );
+    $where = [
+      'kd_beli_ban' => $kd,
+    ];
 
-    $data = $this->Beliban->pelunasan($status, $where);
+    $query = $this->Beliban->pelunasan($status, $where);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function retur()
   {
-    $id   = $this->input->post('id');
+    $id       = $this->input->post('id');
 
     $kd       = $this->input->post('kd');
     $idtoko   = $this->input->post('tokoid');
@@ -227,56 +237,56 @@ class Beli_ban extends CI_Controller
 
     $kdretur  = $this->Returban->cekKdRetur();
 
-    $datadetailretur = array(
-      'detail_beli_ban_id'      => $id,
-      'kd_beli_ban'             => $kd,
-      'kd_retur_ban'            => $kdretur,
-      'noseri_ban_retur'        => $noseri,
-      'ukuran_ban_retur'        => $ukuran,
-      'merk_id_retur'           => $idmerk,
-      'status_ban_beli_retur'   => $stat,
-      'jml_beli_ban_retur'      => $jml,
-      'harga_ban_retur'         => $harga,
-      'diskon_retur'            => $disk,
-    );
+    $datadetailretur = [
+      'detail_beli_ban_id'    => $id,
+      'kd_beli_ban'           => $kd,
+      'kd_retur_ban'          => $kdretur,
+      'noseri_ban_retur'      => $noseri,
+      'ukuran_ban_retur'      => $ukuran,
+      'merk_id_retur'         => $idmerk,
+      'status_ban_beli_retur' => $stat,
+      'jml_beli_ban_retur'    => $jml,
+      'harga_ban_retur'       => $harga,
+      'diskon_retur'          => $disk,
+    ];
 
-    $databeli = array(
-      'retur'     => 1,
-      'user_id'   => $user
-    );
+    $databeli = [
+      'retur'   => 1,
+      'user_id' => $user
+    ];
 
-    $insertdataretur = array(
-      'kd_retur_ban'        => $kdretur,
-      'kd_beli_ban'         => $kd,
-      'toko_ban_id'         => $idtoko,
-      'jml_ban_retur'       => $jml,
-      'ket_ban_retur'       => $ket,
-      'tgl_ban_retur'       => $date,
-      'user_id'             => $user
-    );
+    $insertdataretur = [
+      'kd_retur_ban'  => $kdretur,
+      'kd_beli_ban'   => $kd,
+      'toko_ban_id'   => $idtoko,
+      'jml_ban_retur' => $jml,
+      'ket_ban_retur' => $ket,
+      'tgl_ban_retur' => $date,
+      'user_id'       => $user
+    ];
 
-    $noseribanretur = array(
-      'no_seri'   => $noseri,
-    );
+    $noseribanretur = [
+      'no_seri' => $noseri,
+    ];
 
-    $datahistori  = array(
+    $datahistori  = [
       'kd_history_ban'  => $kdretur,
       'no_seri_history' => $noseri,
       'ket_history'     => 'Retur Toko',
       'ket_trans'       => $ket,
       'user_history'    => $this->session->userdata('username'),
       'tgl_add_history' => $date
-    );
+    ];
 
-    $data = $this->Beliban->retur($datadetailretur, $kd,  $databeli);
-    $data = $this->Returban->returBan($insertdataretur, $noseribanretur, $datahistori);
+    $query = $this->Beliban->retur($datadetailretur, $kd,  $databeli);
+    $query = $this->Returban->returBan($insertdataretur, $noseribanretur, $datahistori);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function delete()
   {
-    $kd = $this->input->post('kd');
+    $kd   = $this->input->post('kd');
 
     $seri = $this->Beliban->getSeriBan($kd);
 
@@ -284,26 +294,29 @@ class Beli_ban extends CI_Controller
       $hasil[] = $res['no_seri_ban'];
     }
 
-    $data = $this->Beliban->delete($kd);
-    $data = $this->Beliban->deleteseri($hasil);
+    $query = $this->Beliban->delete($kd);
+    $query = $this->Beliban->deleteseri($hasil);
 
-    echo json_encode($data);
+    echo json_encode($query);
   }
 
   public function print($kd)
   {
-    $data['beli']     = $this->Beliban->getKdBeliBan($kd);
-    $data['all']      = $this->Beliban->getDetailBeliBan($kd);
-    $data['sumtotal'] = $this->Beliban->getSumId($kd);
-    $data['total']    = $this->Beliban->getTotalBayar($kd);
-    $data['retur']    = $this->Returban->getBanMasukRetur($kd);
+    $data = [
+      'beli'      => $this->Beliban->getKdBeliBan($kd),
+      'all'       => $this->Beliban->getDetailBeliBan($kd),
+      'sumtotal'  => $this->Beliban->getSumId($kd),
+      'total'     => $this->Beliban->getTotalBayar($kd),
+      'retur'     => $this->Returban->getBanMasukRetur($kd),
+    ];
+
     $do = strtoupper($kd);
 
     $content  = $this->load->view('trans/ban/beli/print', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'L'
     ]);
 

@@ -25,12 +25,15 @@ class Pakai_ban extends CI_Controller
 
   public function index()
   {
-    $data['title']    = 'Data Pemakaian Ban';
+    $data = [
+      'title' => 'Data Pemakaian Ban'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/pakai/index', $data);
+    $this->load->view('template/footer');
   }
 
   public function getPakai()
@@ -42,13 +45,16 @@ class Pakai_ban extends CI_Controller
 
   public function addData()
   {
-    $data['title']  = 'Form Tambah Data Pemakaian';
-    $data['kd']     = $this->Pakaiban->cekKdPakai();
+    $data = [
+      'title' => 'Tambah Data Pemakaian',
+      'kd'    => $this->Pakaiban->cekKdPakai()
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/pakai/add', $data);
+    $this->load->view('template/footer');
   }
 
   public function proses()
@@ -71,12 +77,12 @@ class Pakai_ban extends CI_Controller
     $name       = $this->session->userdata('nama_user');
 
     $datapakai = [
-      'kd_pakai_ban'      => $kd,
-      'truck_ban_id'      => $truckid,
-      'total_pakai_ban'   => $tot,
-      'nama_montir_ban'   => $montir,
-      'tgl_pakai_ban'     => $date,
-      'user_id'           => $user,
+      'kd_pakai_ban'    => $kd,
+      'truck_ban_id'    => $truckid,
+      'total_pakai_ban' => $tot,
+      'nama_montir_ban' => $montir,
+      'tgl_pakai_ban'   => $date,
+      'user_id'         => $user,
     ];
 
     $detailpakai = [];
@@ -105,11 +111,11 @@ class Pakai_ban extends CI_Controller
     $updateban = [];
 
     for ($j = 0; $j < $jmlpakai; $j++) {
-      $updateban[] = array(
+      $updateban[] = [
         'id_ban'            => $banid[$j],
         'status_ban'        => "Dipakai " . $platno,
         'date_ban_update'   => $date
-      );
+      ];
     }
 
     $this->Pakaiban->addData($datapakai, $detailpakai, $updateban);
@@ -122,9 +128,11 @@ class Pakai_ban extends CI_Controller
 
   public function detail($kd)
   {
-    $data['title']      = 'Detail Pemakaian';
-    $data['kdpakai']    = $this->Pakaiban->getKdPakai($kd);
-    $data['detail']     = $this->Pakaiban->getDetailPakai($kd);
+    $data = [
+      'title'    => 'Detail Pemakaian',
+      'kdpakai'  => $this->Pakaiban->getKdPakai($kd),
+      'detail'   => $this->Pakaiban->getDetailPakai($kd),
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
@@ -135,12 +143,15 @@ class Pakai_ban extends CI_Controller
 
   public function detailAll()
   {
-    $data['title']    = 'Detail Data Ban Keluar';
+    $data = [
+      'title' => 'Detail Data Ban Keluar'
+    ];
 
     $this->load->view('template/header', $data);
     $this->load->view('template/sidebar');
     $this->load->view('template/navbar');
     $this->load->view('trans/ban/pakai/detail-all', $data);
+    $this->load->view('template/footer');
   }
 
   public function getDetailAll()
@@ -156,15 +167,17 @@ class Pakai_ban extends CI_Controller
     $bulan  = $this->input->post('bulan');
 
     $query  = $this->Pakaiban->getAllDataPakai($truck, $bulan);
- 
-    $data['all'] = $query;
-    $data['bln'] = date('F/Y', strtotime($bulan));
+
+    $data = [
+      'all' => $query,
+      'bln' => date('F/Y', strtotime($bulan))
+    ];
 
     $content  = $this->load->view('trans/ban/pakai/print-all', $data, true);
 
     $mpdf = new Mpdf([
-      'mode' => 'utf-8',
-      'format' => 'A4',
+      'mode'        => 'utf-8',
+      'format'      => 'A4',
       'orientation' => 'P'
     ]);
 
@@ -184,54 +197,57 @@ class Pakai_ban extends CI_Controller
     $status       = 'Gudang';
     $statuspakai  = 'Di kembalikan ke gudang';
 
-    $whereban     = array(
-      'id_ban'    => $idban,
-    );
+    $whereban = [
+      'id_ban'  => $idban,
+    ];
 
-    $databan        = array(
+    $databan  = [
       'status_ban'  => $status
-    );
+    ];
 
-    $wherepakai   = array(
-      'id_detail_pakai_ban'   => $iddetail,
-    );
+    $wherepakai = [
+      'id_detail_pakai_ban' => $iddetail,
+    ];
 
-    $datapakai    = array(
+    $datapakai  = [
       'status_pakai_ban'  => $statuspakai,
-    );
+    ];
 
-    $datahistori  = array(
+    $datahistori  = [
       'kd_history_ban'  => $kdpakai,
       'no_seri_history' => $seriban,
       'ket_history'     => $statuspakai,
       'ket_trans'       => $statuspakai . " Oleh : " . $this->session->userdata('username'),
       'user_history'    => $this->session->userdata('username'),
       'tgl_add_history' => date('Y-m-d H:i:s')
-    );
+    ];
 
     $this->Pakaiban->kembaliGudang($databan, $whereban, $datahistori, $datapakai, $wherepakai);
+
     $this->session->set_flashdata('kembaligudang', 'Ban berhasil dikembalikan ke gudang');
+
     redirect('pakai_ban');
   }
 
   public function delete()
   {
-    $kd     = $this->input->post('kdpakai');
+    $kd = $this->input->post('kdpakai');
 
     $banid  = $this->Pakaiban->getBanPakaiId($kd);
 
     $updateban = [];
 
     foreach ($banid as $res) {
-      $updateban[] = array(
+      $updateban[] = [
         'id_ban'      => $res['ban_id'],
         'status_ban'  => "Gudang",
-      );
+      ];
     }
 
     $this->Pakaiban->delete($kd);
-    $data = $this->Pakaiban->updateStatus($updateban);
 
-    echo json_encode($data);
+    $query = $this->Pakaiban->updateStatus($updateban);
+
+    echo json_encode($query);
   }
 }

@@ -12,7 +12,7 @@ class Movement_model extends CI_Model
 
   public function getData()
   {
-    $this->datatables->select('movement_ban.id_move, movement_ban.no_seri, movement_ban.ukuran, movement_ban.merk, movement_ban.movement, movement_ban.tgl_move')
+    $this->datatables->select('id_move, no_seri, ukuran, merk, movement, tgl_move')
       ->from('movement_ban')
       ->add_column(
         'view',

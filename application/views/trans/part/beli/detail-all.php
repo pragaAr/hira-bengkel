@@ -58,7 +58,8 @@
         </button>
       </div>
       <div class="modal-body" style="font-size:13px">
-        <p class="text-warning font-weight-bold">Jumlah yang dapat di retur minimal 1, dan maksimal sejumlah item yang di beli</p>
+        <p class="text-danger font-weight-bold">Jumlah yang dapat di retur minimal 1, dan maksimal sejumlah item yang di beli</p>
+        <hr>
         <form id="form_returPart">
           <div class="form-row">
             <div class="form-group col-md-6">

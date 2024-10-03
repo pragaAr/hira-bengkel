@@ -1,52 +1,52 @@
 $(document).ready(function () {
-  $('tfoot').hide();
+	$("tfoot").hide();
 
-  $(document).keypress(function (event) {
-    if (event.which == '13') {
-      event.preventDefault();
-    }
-  });
+	$(document).keypress(function (event) {
+		if (event.which == "13") {
+			event.preventDefault();
+		}
+	});
 
-  $('.selecttruck')
-    .select2({
-      placeholder: 'Pilih Truck',
-      theme: 'bootstrap4',
-      ajax: {
-        url: 'http://localhost/he-bengkel/truck/getListTruck',
-        dataType: 'json',
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
-          return {
-            results: data,
-          };
-        },
-      },
-    })
-    .on('select2:select', function (e) {
-      const data = e.params.data;
-      $('#platno').val(data.text);
-      $('#montir').focus();
-    });
+	$(".selecttruck")
+		.select2({
+			placeholder: "Pilih Truck",
+			theme: "bootstrap4",
+			ajax: {
+				url: "http://localhost/he-bengkel/truck/getListTruck",
+				dataType: "json",
+				data: function (params) {
+					return {
+						q: params.term,
+					};
+				},
+				processResults: function (data) {
+					return {
+						results: data,
+					};
+				},
+			},
+		})
+		.on("select2:select", function (e) {
+			const data = e.params.data;
+			$("#platno").val(data.text);
+			$("#montir").focus();
+		});
 
-  let cartBan = [];
+	let cartBan = [];
 
-  $('.selectban')
-    .select2({
-      placeholder: 'Pilih Ban',
-      theme: 'bootstrap4',
-      ajax: {
-        url: 'http://localhost/he-bengkel/ban/getListBan',
-        dataType: 'json',
-        data: function (params) {
-          return {
-            q: params.term,
-          };
-        },
-        processResults: function (data) {
+	$(".selectban")
+		.select2({
+			placeholder: "Pilih Ban",
+			theme: "bootstrap4",
+			ajax: {
+				url: "http://localhost/he-bengkel/ban/getListBan",
+				dataType: "json",
+				data: function (params) {
+					return {
+						q: params.term,
+					};
+				},
+				processResults: function (data) {
 					$.each(data, function (index, value) {
 						value.text = value.text.toUpperCase();
 					});
@@ -54,12 +54,12 @@ $(document).ready(function () {
 						results: data,
 					};
 				},
-      },
-    })
-    .on('select2:select', function (e) {
-      const data = e.params.data;
+			},
+		})
+		.on("select2:select", function (e) {
+			const data = e.params.data;
 
-      const isInCart = cartBan.some((emp) => emp.id === data.id);
+			const isInCart = cartBan.some((emp) => emp.id === data.id);
 
 			if (isInCart) {
 				// true
@@ -92,12 +92,12 @@ $(document).ready(function () {
 				$("#ket").prop("readonly", false).focus();
 				$("button#tambah").prop("disabled", false);
 			}
-    });
+		});
 
-  // =============== //
+	// =============== //
 
-  $(document).on('click', '#tambah', function (e) {
-    const banid = $("#banid").val();
+	$(document).on("click", "#tambah", function (e) {
+		const banid = $("#banid").val();
 		const truckid = $("#truckid").val();
 		const platno = $("#platno").val();
 		const noseri = $("#noseri").val();
@@ -109,7 +109,7 @@ $(document).ready(function () {
 		const jml = $("#jml").val();
 		const ket = $("#ket").val();
 
-    const newRow = `
+		const newRow = `
     <tr class="cart text-center">
 			${truckid}
       <input type="hidden" name="truckid_hidden[]" value="${truckid}">
@@ -156,7 +156,7 @@ $(document).ready(function () {
 
       <td class="aksi">
         <button type="button" class="btn btn-danger btn-sm" id="tombol-hapus" data-noseri="${noseri}" data-id="${banid}">
-          Hapus
+          <i class="fas fa-trash"></i>
         </button>
       </td>
     </tr>
@@ -170,9 +170,9 @@ $(document).ready(function () {
 		$('input[name="totalban_hidden"]').val(hitung_totalban());
 
 		$("tfoot").show();
-  });
+	});
 
-  $("#tgl").on("change", function () {
+	$("#tgl").on("change", function () {
 		const tanggalSekarang = new Date();
 		const tgl = $("#tgl").val();
 
@@ -192,52 +192,52 @@ $(document).ready(function () {
 		}
 	});
 
-  $(document).on('click', '#tombol-hapus', function () {
-    const idToRemove = $(this).data("id");
+	$(document).on("click", "#tombol-hapus", function () {
+		const idToRemove = $(this).data("id");
 
 		cartBan = cartBan.filter((item) => parseInt(item.id) !== idToRemove);
 
-    $(this).closest('.cart').remove();
+		$(this).closest(".cart").remove();
 
-    $('#totalban').html('<p class="m-0">' + hitung_totalban() + '</p>');
-    $('input[name="totalban_hidden"]').val(hitung_totalban());
+		$("#totalban").html('<p class="m-0">' + hitung_totalban() + "</p>");
+		$('input[name="totalban_hidden"]').val(hitung_totalban());
 
 		$(".selectban").val(null).trigger("change");
 
-    if ($('tbody').children().length == 0) $('tfoot').hide();
-  });
+		if ($("tbody").children().length == 0) $("tfoot").hide();
+	});
 
-  $('button[type="submit"]').on('click', function () {
-    $('#noseri').prop('disabled', true);
-  });
+	$('button[type="submit"]').on("click", function () {
+		$("#noseri").prop("disabled", true);
+	});
 
-  function hitung_totalban() {
-    let totalban = 0;
-    $('.jml').each(function () {
-      totalban += parseFloat($(this).text());
-    });
+	function hitung_totalban() {
+		let totalban = 0;
+		$(".jml").each(function () {
+			totalban += parseFloat($(this).text());
+		});
 
-    return totalban;
-  }
+		return totalban;
+	}
 
-  function reset() {
-    $('#banid').val(null).trigger('change');
-    $('#noseri').val('');
-    $('#merk').val('');
-    $('#merkid').val('');
-    $('#ukuran').val('');
-    $('#stat').val('');
-    $('#status').val('');
-    $('#jml').val(1);
-    $('#ket').val('');
-    $('#ket').prop('readonly', true);
+	function reset() {
+		$("#banid").val(null).trigger("change");
+		$("#noseri").val("");
+		$("#merk").val("");
+		$("#merkid").val("");
+		$("#ukuran").val("");
+		$("#stat").val("");
+		$("#status").val("");
+		$("#jml").val(1);
+		$("#ket").val("");
+		$("#ket").prop("readonly", true);
 
-    $('button#tambah').prop('disabled', true);
-  }
+		$("button#tambah").prop("disabled", true);
+	}
 
-  $(document).on('select2:open', () => {
-    document
-      .querySelector('.select2-container--open .select2-search__field')
-      .focus();
-  });
+	$(document).on("select2:open", () => {
+		document
+			.querySelector(".select2-container--open .select2-search__field")
+			.focus();
+	});
 });
