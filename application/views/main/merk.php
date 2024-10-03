@@ -6,6 +6,7 @@
           <h4 class="m-0 text-dark font-weight-bold">
             <?= $title ?>
           </h4>
+
           <div class="btn-group">
             <button type="button" class="btn btn-dark" id="btn-add-merk">
               <i class="fas fa-plus fa-sm"></i>

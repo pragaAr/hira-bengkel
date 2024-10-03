@@ -27,6 +27,8 @@ class Beliban_model extends CI_Model
 
   public function getData()
   {
+    $role = $this->session->userdata('user_role');
+
     $this->datatables->select('
                               a.id_beli_ban, a.kd_beli_ban, a.no_nota_ban, 
                               a.total_beli_ban, a.total_harga_ban, a.tgl_beli_ban, 
@@ -34,8 +36,10 @@ class Beliban_model extends CI_Model
                               b.id_toko, b.nama_toko
                               ')
       ->from('beli_ban a')
-      ->join('toko b', 'b.id_toko = a.toko_ban_id', 'left')
-      ->add_column(
+      ->join('toko b', 'b.id_toko = a.toko_ban_id', 'left');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group"> 
         <a href="http://localhost/he-bengkel/beli_ban/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
@@ -47,6 +51,17 @@ class Beliban_model extends CI_Model
       </div>',
         'id_beli_ban, kd_beli_ban, no_nota_ban, nama_toko, total_beli_ban, total_harga_ban, status_bayar_ban, retur, tgl_beli_ban'
       );
+    } elseif ($role == 'user') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group"> 
+          <a href="http://localhost/he-bengkel/beli_ban/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </div>',
+        'id_beli_ban, kd_beli_ban, no_nota_ban, nama_toko, total_beli_ban, total_harga_ban, status_bayar_ban, retur, tgl_beli_ban'
+      );
+    }
 
     return $this->datatables->generate();
   }

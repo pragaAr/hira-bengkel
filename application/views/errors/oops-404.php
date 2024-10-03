@@ -38,15 +38,25 @@
       font-family: 'Quicksand', sans-serif;
       font-size: 1rem;
       color: #f5f5f5;
-      margin: 0;
+      margin: 3px;
+
+    }
+
+    a {
+      background-color: darkgray;
+      padding: 2px 5px;
+      border-radius: 3px;
+      text-decoration: none;
+      color: white
     }
   </style>
 </head>
 
 <body>
   <div class="container">
-    <h1>Whoops!</h1>
-    <p>Sorry, the page that you requested was not found.</p>
+    <h1>Hmmm!</h1>
+    <p>Halaman yang anda cari tidak ada.</p>
+    <p>Silahkan cari <a href="https://www.google.com/">Disini</a></p>
   </div>
 </body>
 

@@ -16,14 +16,18 @@ class PakaiBan_model extends CI_Model
 
   public function getData()
   {
+    $role = $this->session->userdata('user_role');
+
     $this->datatables->select('
                               a.id_pakai_ban, a.kd_pakai_ban, a.truck_ban_id, 
                               a.nama_montir_ban, a.total_pakai_ban, a.tgl_pakai_ban, 
                               b.id_truck, b.plat_no_truck, b.merk_truck, b.jenis_truck
                               ')
       ->from('pakai_ban a')
-      ->join('truck b', 'b.id_truck = a.truck_ban_id', 'left')
-      ->add_column(
+      ->join('truck b', 'b.id_truck = a.truck_ban_id', 'left');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
           <a href="http://localhost/he-bengkel/pakai_ban/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
@@ -31,10 +35,21 @@ class PakaiBan_model extends CI_Model
           </a>
           <a href="javascript:void(0);" class="btn btn-sm border border-light btn-danger text-white btn-delete" data-kd="$2" title="Delete">
             <i class="fas fa-trash fa-sm"></i>
-        </a>
+          </a>
         </div>',
         'id_pakai_ban, kd_pakai_ban, plat_no_truck, nama_montir_ban, merk_truck, jenis_truck, total_pakai_ban, tgl_pakai_ban'
       );
+    } elseif ($role == 'user') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/he-bengkel/pakai_ban/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </div>',
+        'id_pakai_ban, kd_pakai_ban, plat_no_truck, nama_montir_ban, merk_truck, jenis_truck, total_pakai_ban, tgl_pakai_ban'
+      );
+    }
 
     return $this->datatables->generate();
   }

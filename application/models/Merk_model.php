@@ -8,10 +8,9 @@ class Merk_model extends CI_Model
     $this->datatables->select('id_merk, nama_merk')
       ->from('merk');
 
-    if ($role == 'admin') {
-      $this->datatables->add_column(
-        'view',
-        '<div class="btn-group" role="group">
+    $this->datatables->add_column(
+      'view',
+      '<div class="btn-group" role="group">
           <a href="javascript:void(0);" class="btn btn-sm border border-light btn-warning text-white btn-edit-merk" data-id="$1" title="Edit">
             <i class="fas fa-pencil-alt fa-sm"></i>
           </a>
@@ -19,22 +18,8 @@ class Merk_model extends CI_Model
             <i class="fas fa-trash fa-sm"></i>
           </a>
         </div>',
-        'id_merk, nama_merk'
-      );
-    } else {
-      $this->datatables->add_column(
-        'view',
-        '<div class="btn-group" role="group">
-          <button type="button" disabled class="btn btn-sm border border-light btn-warning text-white btn-edit-user" data-id="$1">
-            <i class="fas fa-pencil-alt fa-sm"></i>
-          </button>
-          <button type="button" disabled class="btn btn-sm border border-light btn-danger text-white btn-delete-user" data-id="$1">
-            <i class="fas fa-trash fa-sm"></i>
-          </button>
-        </div>',
-        'id_merk, nama_merk'
-      );
-    }
+      'id_merk, nama_merk'
+    );
 
     return $this->datatables->generate();
   }

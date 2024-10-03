@@ -91,6 +91,10 @@
       font-style: italic;
       font-size: 11px;
     }
+
+    .ttd {
+      page-break-inside: avoid;
+    }
   </style>
 </head>
 
@@ -337,7 +341,7 @@
         </tfoot>
       </table>
 
-      <table style="width:100%; margin-top:40px; font-size:12px;">
+      <table class="ttd" style="width:100%; margin-top:40px; font-size:12px;">
         <thead>
           <tr>
             <th class="text-center">Dibuat Oleh,</th>

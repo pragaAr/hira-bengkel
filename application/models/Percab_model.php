@@ -7,9 +7,13 @@ class Percab_model extends CI_Model
 {
   public function getData()
   {
+    $role = $this->session->userdata('user_role');
+
     $this->datatables->select('id_percab, nosurat, tglsurat, cabang, totalpercab, totalbyr, percab_add')
-      ->from('percab')
-      ->add_column(
+      ->from('percab');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
           <a href="http://localhost/he-bengkel/percab/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
@@ -21,6 +25,17 @@ class Percab_model extends CI_Model
         </div>',
         'id_percab, nosurat, tglsurat, cabang, totalpercab, totalbyr, percab_add'
       );
+    } elseif ($role == 'user') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/he-bengkel/percab/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </div>',
+        'id_percab, nosurat, tglsurat, cabang, totalpercab, totalbyr, percab_add'
+      );
+    }
 
     return $this->datatables->generate();
   }

@@ -14,6 +14,8 @@ class Beli_model extends CI_Model
 
   public function getData()
   {
+    $role = $this->session->userdata('user_role');
+
     $this->datatables->select('
                               a.id_beli, a.kd_beli, a.no_nota, 
                               a.total_beli, a.diskon_all, a.ppn, a.total_harga, 
@@ -21,8 +23,10 @@ class Beli_model extends CI_Model
                               b.id_toko, b.nama_toko
                               ')
       ->from('beli_part a')
-      ->join('toko b', 'b.id_toko = a.toko_id', 'left')
-      ->add_column(
+      ->join('toko b', 'b.id_toko = a.toko_id', 'left');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group"> 
         <a href="http://localhost/he-bengkel/beli/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
@@ -34,6 +38,17 @@ class Beli_model extends CI_Model
       </div>',
         'id_beli, kd_beli, no_nota, nama_toko, total_beli, diskon_all, ppn, total_harga, status_bayar, retur, tgl_beli'
       );
+    } elseif ($role == 'user') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group"> 
+        <a href="http://localhost/he-bengkel/beli/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
+          <i class="fas fa-eye fa-sm"></i>
+        </a>
+      </div>',
+        'id_beli, kd_beli, no_nota, nama_toko, total_beli, diskon_all, ppn, total_harga, status_bayar, retur, tgl_beli'
+      );
+    }
 
     return $this->datatables->generate();
   }
@@ -60,7 +75,7 @@ class Beli_model extends CI_Model
          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-danger text-white btn-retur-part" data-id="$1" title="Retur Part">
             <i class="fas fa-exchange-alt fa-sm"></i>
           </a>
-      </div>',
+        </div>',
         'id_detail_beli, kd_beli, no_nota, nama_toko, jenis_part, nama_merk, status_part_beli, jml_beli, harga_pcs, sub_total, ket_beli, tgl_beli'
       );
 

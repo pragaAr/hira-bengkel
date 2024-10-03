@@ -14,10 +14,14 @@ class Vulkanisir_model extends CI_Model
 
   public function getData()
   {
+    $role = $this->session->userdata('user_role');
+
     $this->datatables->select('id_vulk, kd_vulk, nama_toko, jml_total_vulk, tgl_vulk')
       ->from('vulkanisir')
-      ->join('toko', 'toko.id_toko = vulkanisir.tempat_vulk', 'left')
-      ->add_column(
+      ->join('toko', 'toko.id_toko = vulkanisir.tempat_vulk', 'left');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
           <a href="http://localhost/he-bengkel/vulkanisir/suratJalanKeluar/$2" target="_blank" class="btn btn-info btn-sm border border-light btn-print" title="Cetak">
@@ -32,6 +36,20 @@ class Vulkanisir_model extends CI_Model
         </div>',
         'id_vulk, kd_vulk, tempat_vulk, jml_total_vulk, tgl_vulk'
       );
+    } elseif ($role == 'user') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/he-bengkel/vulkanisir/suratJalanKeluar/$2" target="_blank" class="btn btn-info btn-sm border border-light btn-print" title="Cetak">
+            <i class="fas fa-print fa-sm"></i>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-sm border border-light btn-success text-white btn-detail" data-kd="$2" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </div>',
+        'id_vulk, kd_vulk, tempat_vulk, jml_total_vulk, tgl_vulk'
+      );
+    }
 
     return $this->datatables->generate();
   }

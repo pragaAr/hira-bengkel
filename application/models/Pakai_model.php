@@ -16,14 +16,18 @@ class Pakai_model extends CI_Model
 
   public function getData()
   {
+    $role = $this->session->userdata('user_role');
+
     $this->datatables->select('
                               a.id_pakai, a.kd_pakai, a.nama_montir, 
                               a.total_pakai, a.tgl_pakai, 
                               b.plat_no_truck, b.merk_truck, b.jenis_truck
                               ')
       ->from('pakai_part a')
-      ->join('truck b', 'b.id_truck = a.truck_id')
-      ->add_column(
+      ->join('truck b', 'b.id_truck = a.truck_id');
+
+    if ($role == 'admin') {
+      $this->datatables->add_column(
         'view',
         '<div class="btn-group" role="group">
           <a href="http://localhost/he-bengkel/pakai/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
@@ -35,6 +39,17 @@ class Pakai_model extends CI_Model
         </div>',
         'id_pakai, kd_pakai, plat_no_truck, merk_truck, jenis_truck, total_pakai, tgl_pakai'
       );
+    } elseif ($role == 'user') {
+      $this->datatables->add_column(
+        'view',
+        '<div class="btn-group" role="group">
+          <a href="http://localhost/he-bengkel/pakai/detail/$2" class="btn btn-sm border border-light btn-success text-white" title="Detail">
+            <i class="fas fa-eye fa-sm"></i>
+          </a>
+        </div>',
+        'id_pakai, kd_pakai, plat_no_truck, merk_truck, jenis_truck, total_pakai, tgl_pakai'
+      );
+    }
 
     return $this->datatables->generate();
   }
