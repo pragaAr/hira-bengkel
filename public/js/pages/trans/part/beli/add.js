@@ -353,6 +353,16 @@ $(document).ready(function () {
 	});
 
 	$(document).on("click", "#tambah", function (e) {
+		console.log($("#total_min_diskon").val());
+
+		let subtotal = $('input[name="total_min_diskon"]')
+			.val()
+			.replace(/[^\d.]/g, "");
+
+		if (subtotal === "") {
+			subtotal = 0;
+		}
+
 		const cart = {
 			partid: $('select[name="part_belipart"]').val(),
 			partname: $('input[name="partname"]').val(),
@@ -368,9 +378,7 @@ $(document).ready(function () {
 				.replace(/[^\d.]/g, ""),
 			statuspart: $('select[name="status_part_beli"]').val(),
 			keterangan: $('input[name="ket_beli"]').val(),
-			subtotal: $('input[name="total_min_diskon"]')
-				.val()
-				.replace(/[^\d.]/g, ""),
+			subtotal: subtotal,
 			ppn: $('input[name="ppn_belipart"]')
 				.val()
 				.replace(/[^\d.]/g, ""),
