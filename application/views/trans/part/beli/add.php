@@ -74,7 +74,7 @@
             <h5 class="text-dark font-weight-bold mt-3">Data Sparepart</h5>
             <hr>
             <div class="form-row">
-              <?php if ($this->session->userdata('user_role') == 'admin') { ?>
+              <?php if ($this->session->userdata('user_role') === 'admin') { ?>
                 <div class="form-group col-lg-6 col-md-12">
                   <label class="font-weight-bold text-dark" for="part_belipart">Sparepart</label>
                   <div class="input-group">
@@ -97,6 +97,8 @@
                     <select name="part_belipart" id="part_belipart" class="form-control selectpart" style="width:100%">
                       <option value=""></option>
                     </select>
+                    <input type="hidden" class="form-control" name="partid" id="partid" readonly>
+                    <input type="hidden" class="form-control" name="partname" id="partname" readonly>
                   </div>
                 </div>
               <?php } ?>
@@ -183,8 +185,8 @@
                         <h5 class="text-danger text-right font-weight-bold" id="total"> </h5>
                       </td>
                       <td>
-                        <input type="hidden" name="totalpart_hidden" value="">
-                        <input type="hidden" name="total_hidden" value="">
+                        <input type="hidden" name="totalpart_hidden" id="totalpart_hidden" value="">
+                        <input type="hidden" name="total_hidden" id="total_hidden" value="">
                         <button type="submit" class="btn btn-sm btn-success" id="btn-submitBeli" title="Simpan">
                           <i class="fa fa-save fa-sm"></i></button>
                       </td>

@@ -136,11 +136,6 @@ class Beli extends CI_Controller
     echo json_encode($query);
   }
 
-  public function cart()
-  {
-    $this->load->view('trans/part/beli/cart');
-  }
-
   public function detail($kd)
   {
     $data = [

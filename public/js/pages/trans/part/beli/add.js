@@ -8,33 +8,13 @@ $(document).ready(function () {
 	});
 
 	$(function () {
-		$("#diskon_belipart").on(
+		// Seleksi semua elemen input yang menggunakan format yang sama
+		$("#diskon_belipart, #ppn_belipart, #harga_pcs, #diskon").on(
 			"keydown keyup click change blur input",
 			function (e) {
 				$(this).val(format($(this).val()));
 			}
 		);
-	});
-
-	$(function () {
-		$("#ppn_belipart").on(
-			"keydown keyup click change blur input",
-			function (e) {
-				$(this).val(format($(this).val()));
-			}
-		);
-	});
-
-	$(function () {
-		$("#harga_pcs").on("keydown keyup click change blur input", function (e) {
-			$(this).val(format($(this).val()));
-		});
-	});
-
-	$(function () {
-		$("#diskon").on("keydown keyup click change blur input", function (e) {
-			$(this).val(format($(this).val()));
-		});
 	});
 
 	$(".status_bayar").select2({
@@ -139,6 +119,7 @@ $(document).ready(function () {
 		})
 		.on("select2:select", function (e) {
 			const data = e.params.data;
+
 			$("#partid").val(data.id);
 			$("#partname").val(data.namapart);
 			$("#sat").val(data.satuanpart);
@@ -328,34 +309,32 @@ $(document).ready(function () {
 		return format(byr);
 	}
 
-	$('input[name="jml_beli"]').on("input keyup change", function () {
-		if ($('input[name="diskon"]').val() <= 100) {
-			$('input[name="total_min_diskon"]').val(hitungTotalPersen());
+	$("#jml_beli").on("input keyup change", function () {
+		if ($("#diskon").val() <= 100) {
+			$("#total_min_diskon").val(hitungTotalPersen());
 		} else {
-			$('input[name="total_min_diskon"]').val(hitungTotalNominal());
+			$("#total_min_diskon").val(hitungTotalNominal());
 		}
 	});
 
-	$('input[name="harga_pcs"]').on("input keyup change", function () {
-		if ($('input[name="diskon"]').val() <= 100) {
-			$('input[name="total_min_diskon"]').val(hitungTotalPersen());
+	$("#harga_pcs").on("input keyup change", function () {
+		if ($("#diskon").val() <= 100) {
+			$("#total_min_diskon").val(hitungTotalPersen());
 		} else {
-			$('input[name="total_min_diskon"]').val(hitungTotalNominal());
+			$("#total_min_diskon").val(hitungTotalNominal());
 		}
 	});
 
-	$('input[name="diskon"]').on("input keyup change", function () {
-		if ($('input[name="diskon"]').val() <= 100) {
-			$('input[name="total_min_diskon"]').val(hitungTotalPersen());
+	$("#diskon").on("input keyup change", function () {
+		if ($("#diskon").val() <= 100) {
+			$("#total_min_diskon").val(hitungTotalPersen());
 		} else {
-			$('input[name="total_min_diskon"]').val(hitungTotalNominal());
+			$("#total_min_diskon").val(hitungTotalNominal());
 		}
 	});
 
 	$(document).on("click", "#tambah", function (e) {
-		console.log($("#total_min_diskon").val());
-
-		let subtotal = $('input[name="total_min_diskon"]')
+		let subtotal = $("#total_min_diskon")
 			.val()
 			.replace(/[^\d.]/g, "");
 
@@ -363,56 +342,111 @@ $(document).ready(function () {
 			subtotal = 0;
 		}
 
-		const cart = {
-			partid: $('select[name="part_belipart"]').val(),
-			partname: $('input[name="partname"]').val(),
-			sat: $('input[name="sat"]').val(),
-			merkname: $('input[name="merk_part"]').val(),
-			merkid: $('input[name="merk_partid"]').val(),
-			jmlbeli: $('input[name="jml_beli"]').val(),
-			hrgpcs: $('input[name="harga_pcs"]')
+		const partid = $("#part_belipart").val(),
+			partname = $("#partname").val(),
+			sat = $("#sat").val(),
+			merkname = $("#merk_part").val(),
+			merkid = $("#merk_partid").val(),
+			jmlbeli = $("#jml_beli").val(),
+			hrgpcs = $("#harga_pcs")
 				.val()
 				.replace(/[^\d.]/g, ""),
-			diskon: $('input[name="diskon"]')
+			diskon = $("#diskon")
 				.val()
 				.replace(/[^\d.]/g, ""),
-			statuspart: $('select[name="status_part_beli"]').val(),
-			keterangan: $('input[name="ket_beli"]').val(),
-			subtotal: subtotal,
-			ppn: $('input[name="ppn_belipart"]')
+			statuspart = $("#status_part_beli").val(),
+			keterangan = $("#ket_beli").val(),
+			ppn = $("#ppn_belipart")
 				.val()
-				.replace(/[^\d.]/g, ""),
-		};
+				.replace(/[^\d.]/g, "");
 
-		$.ajax({
-			url: "http://localhost/he-bengkel/beli/cart",
-			type: "POST",
-			data: cart,
-			success: function (data) {
-				$("button#tambah").prop("disabled", true);
-				$("button#tambah").addClass("btn-secondary");
-				$("button#tambah").removeClass("btn-primary");
-				reset();
+		const newRow = `
+			<tr class="cart text-center">
+				${partid}
+				<input type="hidden" name="partid_hidden[]" value="${partid}">
 
-				$("table#cart tbody").append(data);
-				$("#totalpart").html("<p>" + hitung_totalpart() + "</p>");
-				$("#total").html("<p>" + hitung_total().toLocaleString() + "</p>");
-				$('input[name="totalpart_hidden"]').val(hitung_totalpart());
-				$('input[name="total_hidden"]').val(hitung_total());
+				<td class="align-middle partname">
+					${partname}
+					<input type="hidden" name="partname_hidden[]" value="${partname}">
+				</td>
 
-				$("tfoot").show();
-			},
-		});
+				${merkid}
+				<input type="hidden" name="merkid_hidden[]" value="${merkid}">
+
+				${merkname}
+				<input type="hidden" name="merkname_hidden[]" value="${merkname}">
+
+				<td class="align-middle jmlbeli">
+					${jmlbeli}
+					<input type="hidden" name="jmlbeli_hidden[]" value="${jmlbeli}">
+				</td>
+
+				<td class="align-middle sat">
+					${sat}
+					<input type="hidden" name="sat_hidden[]" value="${sat}">
+				</td>
+
+				<td class="align-middle hrgpcs">
+					${format(hrgpcs)}
+					<input type="hidden" name="hrgpcs_hidden[]" value="${hrgpcs}">
+				</td>
+
+				<td class="align-middle diskon">
+					${format(diskon)}
+					<input type="hidden" name="diskon_hidden[]" value="${diskon}">
+				</td>
+
+				${ppn}
+				<input type="hidden" name="ppn_hidden[]" value="${ppn}">
+
+				${keterangan}
+				<input type="hidden" name="keterangan_hidden[]" value="${keterangan}">
+
+				<td class="align-middle status_part">
+					${statuspart}
+					<input type="hidden" name="statuspart_hidden[]" value="${statuspart}">
+				</td>
+
+				<td class="align-middle subtotal">
+					${format(subtotal)}
+					<input type="hidden" name="subtotal_hidden[]" value="${subtotal}">
+				</td>
+
+				${totalpart}
+				<input type="hidden" name="totalpart_hidden[]" value="${totalpart}">
+
+				<td class="align-middle aksi">
+					<button type="button" class="btn btn-warning btn-sm" id="tombol-hapus" data-toggle="tooltip" title="Delete" data-partid="${partid}">
+						<i class="fa fa-trash fa-sm"></i>
+					</button>
+				</td>
+			</tr>
+		`;
+
+		$("#cart tbody").append(newRow);
+
+		$("button#tambah").prop("disabled", true);
+		$("button#tambah").addClass("btn-secondary");
+		$("button#tambah").removeClass("btn-primary");
+
+		reset();
+
+		$("#totalpart").html("<p>" + hitung_totalpart() + "</p>");
+		$("#total").html("<p>" + hitung_total().toLocaleString() + "</p>");
+		$('input[name="totalpart_hidden"]').val(hitung_totalpart());
+		$('input[name="total_hidden"]').val(hitung_total());
+
+		$("tfoot").show();
 	});
 
 	$(document).on("click", "#tombol-hapus", function () {
-		$(this).closest(".row-cart").remove();
+		$(this).closest(".cart").remove();
 
 		$("#totalpart").html("<p>" + hitung_totalpart() + "</p>");
 		$("#total").html("<p>" + hitung_total() + "</p>");
 
-		$('input[name="totalpart_hidden"]').val(hitung_totalpart());
-		$('input[name="total_hidden"]').val(hitung_total());
+		$("#totalpart_hidden").val(hitung_totalpart());
+		$("#total_hidden").val(hitung_total());
 
 		if ($("tbody").children().length == 0) $("tfoot").hide();
 	});
@@ -423,6 +457,7 @@ $(document).ready(function () {
 
 	$("#belipart_add").on("change", function () {
 		const tanggalSekarang = new Date();
+
 		const belipartAdd = $("#belipart_add").val();
 
 		let tanggalInput = new Date(belipartAdd);
@@ -443,15 +478,20 @@ $(document).ready(function () {
 
 	function hitung_total() {
 		let total = 0;
-		let diskall = $('input[name="diskon_belipart"]')
+
+		let diskall = $("#diskon_belipart")
 			.val()
 			.replace(/[^\d.]/g, "");
-		let ppn = $('input[name="ppn_belipart"]')
+		let ppn = $("#ppn_belipart")
 			.val()
 			.replace(/[^\d.]/g, "");
+
 		let min = diskall / 100;
+
 		let hasil = 0;
+
 		let sub = 0;
+
 		if (diskall > 100) {
 			$(".subtotal").each(function () {
 				total += parseFloat(
@@ -460,6 +500,7 @@ $(document).ready(function () {
 						.replace(/[^\d.]/g, "")
 				);
 			});
+
 			return total - diskall + parseFloat(ppn);
 		} else {
 			$(".subtotal").each(function () {
@@ -469,7 +510,9 @@ $(document).ready(function () {
 						.replace(/[^\d.]/g, "")
 				);
 			});
+
 			sub = hasil * min;
+
 			return hasil - sub + parseFloat(ppn);
 		}
 	}
@@ -479,27 +522,28 @@ $(document).ready(function () {
 		$(".jmlbeli").each(function () {
 			totalpart += parseFloat($(this).text());
 		});
+
 		return totalpart;
 	}
 
 	function reset() {
 		$("#part_belipart").val(null).trigger("change");
-		$('input[name="partname"]').val("");
-		$('input[name="sat"]').val("");
-		$('input[name="merk_part"]').val("");
-		$('input[name="merk_partid"]').val("");
-		$('input[name="jml_beli"]').val(1);
-		$('input[name="harga_pcs"]').val(0);
-		$('input[name="diskon"]').val(0);
+		$("#partname").val("");
+		$("#sat").val("");
+		$("#merk_part").val("");
+		$("#merk_partid").val("");
+		$("#jml_beli").val(1);
+		$("#harga_pcs").val(0);
+		$("#diskon").val(0);
 		$("#status_part_beli").val(null).trigger("change");
-		$('input[name="ket_beli"]').val("");
-		$('input[name="total_min_diskon"]').val("");
+		$("#ket_beli").val("");
+		$("#total_min_diskon").val("");
 		$("#status_part_beli").prop("disabled", true);
-		$('input[name="jml_beli"]').prop("readonly", true);
-		$('input[name="harga_pcs"]').prop("readonly", true);
-		$('input[name="sat"]').prop("readonly", true);
-		$('input[name="diskon"]').prop("readonly", true);
-		$('input[name="ket_beli"]').prop("readonly", true);
+		$("#jml_beli").prop("readonly", true);
+		$("#harga_pcs").prop("readonly", true);
+		$("#sat").prop("readonly", true);
+		$("#diskon").prop("readonly", true);
+		$("#ket_beli").prop("readonly", true);
 		$("button#tambah").prop("disabled", true);
 	}
 

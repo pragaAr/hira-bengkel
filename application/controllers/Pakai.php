@@ -57,11 +57,6 @@ class Pakai extends CI_Controller
     $this->load->view('template/footer');
   }
 
-  public function cart()
-  {
-    $this->load->view('trans/part/pakai/cart');
-  }
-
   public function proses()
   {
     $jmlpakai     = count($this->input->post('partid_hidden'));

@@ -13,44 +13,22 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#diskall").on("keypress", function (key) {
-		if (key.charCode < 48 || key.charCode > 57) return false;
-	});
-
-	$("#ppn").on("keypress", function (key) {
-		if (key.charCode < 48 || key.charCode > 57) return false;
-	});
-
-	$("#hrg").on("keypress", function (key) {
-		if (key.charCode < 48 || key.charCode > 57) return false;
-	});
-
-	$("#disk").on("keypress", function (key) {
-		if (key.charCode < 48 || key.charCode > 57) return false;
-	});
-
 	$(function () {
-		$("#diskall").on("keydown keyup click change blur input", function (e) {
-			$(this).val(format($(this).val()));
+		// Seleksi semua elemen input yang akan memfilter karakter yang diizinkan
+		$("#diskall, #ppn, #hrg, #disk").on("keypress", function (key) {
+			// Cek apakah karakter yang dimasukkan bukan angka
+			if (key.charCode < 48 || key.charCode > 57) return false;
 		});
 	});
 
 	$(function () {
-		$("#ppn").on("keydown keyup click change blur input", function (e) {
-			$(this).val(format($(this).val()));
-		});
-	});
-
-	$(function () {
-		$("#hrg").on("keydown keyup click change blur input", function (e) {
-			$(this).val(format($(this).val()));
-		});
-	});
-
-	$(function () {
-		$("#disk").on("keydown keyup click change blur input", function (e) {
-			$(this).val(format($(this).val()));
-		});
+		// Seleksi semua elemen input yang menggunakan format yang sama
+		$("#diskall, #ppn, #hrg, #disk").on(
+			"keydown keyup click change blur input",
+			function (e) {
+				$(this).val(format($(this).val()));
+			}
+		);
 	});
 
 	$(".selectstatusbayar").select2({
@@ -283,7 +261,7 @@ $(document).ready(function () {
 		}
 	});
 
-	let cartPart = [];
+	let cartBan = [];
 
 	$(document).on("click", "#tambah", function (e) {
 		const noseri = $("#noseri").val();
@@ -293,7 +271,7 @@ $(document).ready(function () {
 			text: noseri,
 		};
 
-		const isInCart = cartPart.some((emp) => emp.id === dataCart.id);
+		const isInCart = cartBan.some((emp) => emp.id === dataCart.id);
 
 		if (isInCart) {
 			Swal.fire({
@@ -302,9 +280,9 @@ $(document).ready(function () {
 				text: "No Seri sudah ada di list!",
 			});
 		} else {
-			cartPart.push(dataCart);
+			cartBan.push(dataCart);
 
-			console.log(cartPart);
+			console.log(cartBan);
 
 			const merkid = $("#merkid").val();
 			const merk = $("#merk").val();
@@ -423,7 +401,7 @@ $(document).ready(function () {
 	$(document).on("click", "#tombol-hapus", function () {
 		const idToRemove = $(this).data("id");
 
-		cartPart = cartPart.filter((item) => item.id !== idToRemove);
+		cartBan = cartBan.filter((item) => item.id !== idToRemove);
 
 		$(this).closest(".cart").remove();
 
